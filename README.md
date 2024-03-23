@@ -10,7 +10,8 @@ We don't know when it will be completed, as we are prioritizing our real-life pl
   
 About the build environment  
 LibEveryFileExplorer.dll  
-HelixToolkit v2.12.0  
-HelixToolkit.Wpf v2.12.0  
-Visual Studio 2019  
+HelixToolkit v2.23.0  
+HelixToolkit.Wpf v2.23.0  
+HelixToolkit.Wpf.SharpDX v2.23.0  
+Visual Studio 2022  
 HLSL Tool for Visual Studio  
