@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static CGFX_Viewer_SharpDX.CGFXFormat.SOBJ.Shape.VertexAttribute.Stream;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAttribute.Param
 {
@@ -14,8 +14,8 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
     {
         //public int FormatType { get; set; }
         //public int ComponentCount { get; set; } //For example XYZ = 3, ST = 2, RGBA = 4
-        public CGFX_Viewer_SharpDX.VertexAttribute.Usage VertexAttributeUsageFlag { get; set; }
-        public CGFX_Viewer_SharpDX.VertexAttribute.Flag VertexAttributeFlag { get; set; }
+        public CGFXLibrary.VertexAttribute.Usage VertexAttributeUsageFlag { get; set; }
+        public CGFXLibrary.VertexAttribute.Flag VertexAttributeFlag { get; set; }
 
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
         public Component Components { get; set; }
@@ -46,7 +46,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
                 RGBA = 4
             }
 
-            public Component(CGFXFormat.SOBJ.Shape.VertexAttribute.Param.Component component)
+            public Component(SOBJ.Shape.VertexAttribute.Param.Component component)
             {
                 Flags = component.Flags;
                 ComponentCount = component.ComponentCount;
@@ -64,7 +64,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
         public int AttributeListOffset { get; set; }
         public List<float> AttributeList { get; set; }
 
-        public Param_PropertyGrid(CGFXFormat.SOBJ.Shape.VertexAttribute.Param param)
+        public Param_PropertyGrid(SOBJ.Shape.VertexAttribute.Param param)
         {
             //FormatType = param.FormatType;
             //ComponentCount = param.ComponentCount;
@@ -82,10 +82,9 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
         {
             //FormatType = 0;
             //ComponentCount = 0;
-            VertexAttributeUsageFlag = new CGFX_Viewer_SharpDX.VertexAttribute.Usage(-1);
-            VertexAttributeFlag = new CGFX_Viewer_SharpDX.VertexAttribute.Flag(-1);
+            VertexAttributeUsageFlag = new CGFXLibrary.VertexAttribute.Usage(-1);
+            VertexAttributeFlag = new CGFXLibrary.VertexAttribute.Flag(-1);
             Components = new Component();
-            ;
             Scale = 0;
             AttributeCount = 0;
             AttributeListOffset = 0;

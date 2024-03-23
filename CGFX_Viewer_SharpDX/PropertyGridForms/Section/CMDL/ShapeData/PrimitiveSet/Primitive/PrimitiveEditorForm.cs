@@ -7,14 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.PrimitiveSet.Primitive
 {
     public partial class PrimitiveEditorForm : Form
     {
-        public List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive> primitive_List { get; set; }
+        public List<SOBJ.Shape.PrimitiveSet.Primitive> primitive_List { get; set; }
 
-        public PrimitiveEditorForm(List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive> primitives)
+        public PrimitiveEditorForm(List<SOBJ.Shape.PrimitiveSet.Primitive> primitives)
         {
             InitializeComponent();
             primitive_List = primitives;

@@ -7,14 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.PrimitiveSet.Primitive.IndexStreamCtr
 {
     public partial class IndexStreamCtrEditorForm : Form
     {
-        public List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr> indexStreamCtr_List { get; set; }
+        public List<SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr> indexStreamCtr_List { get; set; }
 
-        public IndexStreamCtrEditorForm(List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr> IndexStreamCtrs)
+        public IndexStreamCtrEditorForm(List<SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr> IndexStreamCtrs)
         {
             InitializeComponent();
             indexStreamCtr_List = IndexStreamCtrs;

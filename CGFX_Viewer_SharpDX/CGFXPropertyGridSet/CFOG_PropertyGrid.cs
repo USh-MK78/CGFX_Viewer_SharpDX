@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Drawing.Design;
 using System.Windows.Forms.Design;
 using System.Windows.Forms;
+using CGFXLibrary;
+using CGFXLibrary.CGFXSection;
 
 namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
 {
@@ -16,18 +18,18 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
 	{
         public string Name { get; set; }
 
-        public List<CGFXFormat.UserData> UserData_List = new List<CGFXFormat.UserData>();
+        public List<CGFXFormat.CGFXData> UserData_List = new List<CGFXFormat.CGFXData>();
         [Editor(typeof(CGFX_CustomPropertyGridClass.UserDataDictionaryEditor), typeof(UITypeEditor))]
-        public List<CGFXFormat.UserData> userDataList { get => UserData_List; set => UserData_List = value; }
+        public List<CGFXFormat.CGFXData> userDataList { get => UserData_List; set => UserData_List = value; }
 
 
-        public CGFXFormat.CGFXSection.CFOG.CFOGSetting.FogSuffixType FogSuffixType { get; set; }
+        public CFOG.CFOGSetting.FogSuffixType FogSuffixType { get; set; }
 
         public float FogStart { get; set; }
         public float FogEnd { get; set; }
         public float Concentration { get; set; }
 
-        public CGFXFormat.CGFXSection.CFOG.FogFlipSetting.FlipSetting FlipSetting { get; set; }
+        public CFOG.FogFlipSetting.FlipSetting FlipSetting { get; set; }
 
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
         public RGB RGB_Color { get; set; } = new RGB();
@@ -83,11 +85,11 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
 			}
 		}
 
-        internal CFOG_PropertyGrid(CGFXFormat.CGFXSection.CFOG CFOGData)
+        internal CFOG_PropertyGrid(CFOG CFOGData)
 		{
             Name = CFOGData.Name;
 
-            userDataList = CFOGData.UserDataDict.DICT_Entries.Select(x => x.CGFXData.UserData).ToList();
+            userDataList = CFOGData.UserDataDict.DICT_Entries.Select(x => x.CGFXData).ToList();
 
 
             FogSuffixType = CFOGData.CFOGSettings.FogSuffixTypes;

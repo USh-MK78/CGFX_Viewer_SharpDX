@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.General.UserDataForm
 {
@@ -20,9 +21,9 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.General.UserDataForm
             public byte[] Flag3 { get; set; } //0x4(Default Value : 02 00 00 00(?))
             public int STRING_ValueCount { get; set; }
 
-            public List<CGFXFormat.UserData.StringData.UserDataItem_String> UserDataStringList { get; set; }
+            public List<CGFXFormat.CGFXData.StringData.UserDataItem_String> UserDataStringList { get; set; }
 
-            public StringData(CGFXFormat.UserData.StringData stringData)
+            public StringData(CGFXFormat.CGFXData.StringData stringData)
             {
                 UDName = stringData.UDName;
                 //UserDataStringNameOffset = 0;
@@ -43,9 +44,9 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.General.UserDataForm
             public byte[] Flag2 { get; set; } //0x4(Default Value : 01 00 00 00(?))
             public int INT32_ValueCount { get; set; } //0x4
 
-            public List<CGFXFormat.UserData.Int32Data.UserDataItem_INT32> UserDataInt32List { get; set; }
+            public List<CGFXFormat.CGFXData.Int32Data.UserDataItem_INT32> UserDataInt32List { get; set; }
 
-            public Int32Data(CGFXFormat.UserData.Int32Data int32Data)
+            public Int32Data(CGFXFormat.CGFXData.Int32Data int32Data)
             {
                 UDName = int32Data.UDName;
                 //UserDataInt32NameOffset = 0;
@@ -67,9 +68,9 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.General.UserDataForm
 
             public int UnkData { get; set; }
 
-            public List<CGFXFormat.UserData.RealNumber.UserDataItem_REALNUMBER> UserDataRealNumberList { get; set; }
+            public List<CGFXFormat.CGFXData.RealNumber.UserDataItem_REALNUMBER> UserDataRealNumberList { get; set; }
 
-            public RealNumber(CGFXFormat.UserData.RealNumber realNumber)
+            public RealNumber(CGFXFormat.CGFXData.RealNumber realNumber)
             {
                 UDName = realNumber.UDName;
                 UDName_Sub = realNumber.UDName_Sub;
@@ -86,20 +87,20 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.General.UserDataForm
             //}
         }
 
-        public UserDataEntryPropertyGrid(CGFXFormat.UserData userDataEntry)
+        public UserDataEntryPropertyGrid(CGFXFormat.CGFXData userDataEntry)
         {
-            if (userDataEntry.Type == CGFXFormat.UserData.UserDataType.String)
-			{
+            if (userDataEntry.String_Data != null)
+            {
                 String_Data = new StringData(userDataEntry.String_Data);
-			}
-            if (userDataEntry.Type == CGFXFormat.UserData.UserDataType.Int32)
-			{
+            }
+            if (userDataEntry.Int32_Data != null)
+            {
                 Int32_Data = new Int32Data(userDataEntry.Int32_Data);
-			}
-            if (userDataEntry.Type == CGFXFormat.UserData.UserDataType.RealNumber)
-			{
+            }
+            if (userDataEntry.RealNumber_Data != null)
+            {
                 RealNumber_Data = new RealNumber(userDataEntry.RealNumber_Data);
-			}
+            }
         }
     }
 }

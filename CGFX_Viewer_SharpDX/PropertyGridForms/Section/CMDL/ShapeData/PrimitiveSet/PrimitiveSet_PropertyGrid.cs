@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.Design;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.PrimitiveSet
 {
@@ -21,11 +22,11 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.Primitive
         public int PrimitiveCount { get; set; }
         public int PrimitiveOffsetListOffset { get; set; }
 
-        public List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive> Primitive_List = new List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive>();
+        public List<SOBJ.Shape.PrimitiveSet.Primitive> Primitive_List = new List<SOBJ.Shape.PrimitiveSet.Primitive>();
         [Editor(typeof(Primitive.PrimitiveEditor), typeof(UITypeEditor))]
-        public List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive> PrimitiveList { get => Primitive_List; set => Primitive_List = value; }
+        public List<SOBJ.Shape.PrimitiveSet.Primitive> PrimitiveList { get => Primitive_List; set => Primitive_List = value; }
 
-        public PrimitiveSet_PropertyGrid(CGFXFormat.SOBJ.Shape.PrimitiveSet primitiveSet)
+        public PrimitiveSet_PropertyGrid(SOBJ.Shape.PrimitiveSet primitiveSet)
         {
             PrimitiveOffsetListOffset = primitiveSet.PrimitiveSetOffset;
             RelatedBoneCount = primitiveSet.RelatedBoneCount;
@@ -54,7 +55,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.Primitive
             IWindowsFormsEditorService svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             if (svc != null && value != null)
             {
-                PrimitiveSetEditorForm form = new PrimitiveSetEditorForm(value as List<CGFXFormat.SOBJ.Shape.PrimitiveSet>);
+                PrimitiveSetEditorForm form = new PrimitiveSetEditorForm(value as List<SOBJ.Shape.PrimitiveSet>);
                 form.ShowDialog();
 
                 value = form.primitiveSet_List;

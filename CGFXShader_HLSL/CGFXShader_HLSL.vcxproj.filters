@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル\Common">
+      <UniqueIdentifier>{51992350-33bd-46d5-bc5c-b47c146349ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Mathematics">
+      <UniqueIdentifier>{8c1bbccc-f8ac-4eac-8bb2-85522ae8128c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="CGFXShader\Common\CGFXBuffer.hlsl">
+      <Filter>リソース ファイル\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\Common\CGFXDataStruct.hlsl">
+      <Filter>リソース ファイル\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\Common\Common.hlsl">
+      <Filter>リソース ファイル\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\Common\CommonBuffers.hlsl">
+      <Filter>リソース ファイル\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\Common\ConstantValues.hlsl">
+      <Filter>リソース ファイル\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\Common\DataStructs.hlsl">
+      <Filter>リソース ファイル\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\Common\psCommon.hlsl">
+      <Filter>リソース ファイル\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\Mathematics\Combiner.hlsl">
+      <Filter>リソース ファイル\Mathematics</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\psCGFXMaterial.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\vsCGFXMaterial.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\Mathematics\TextureCombinerStageColor.hlsl">
+      <Filter>リソース ファイル\Mathematics</Filter>
+    </FxCompile>
+    <FxCompile Include="CGFXShader\Mathematics\TextureCombinerStageAlpha.hlsl">
+      <Filter>リソース ファイル\Mathematics</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

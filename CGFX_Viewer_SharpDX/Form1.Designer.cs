@@ -33,6 +33,7 @@ namespace CGFX_Viewer_SharpDX
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -49,20 +50,28 @@ namespace CGFX_Viewer_SharpDX
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.LUTS_PropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.propertyGrid4 = new System.Windows.Forms.PropertyGrid();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.propertyGrid5 = new System.Windows.Forms.PropertyGrid();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.CCAM_PropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.propertyGrid6 = new System.Windows.Forms.PropertyGrid();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.propertyGrid7 = new System.Windows.Forms.PropertyGrid();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.tabPage12 = new System.Windows.Forms.TabPage();
+            this.propertyGrid8 = new System.Windows.Forms.PropertyGrid();
             this.tabPage13 = new System.Windows.Forms.TabPage();
             this.tabPage14 = new System.Windows.Forms.TabPage();
             this.tabPage15 = new System.Windows.Forms.TabPage();
             this.tabPage16 = new System.Windows.Forms.TabPage();
             this.tabPage17 = new System.Windows.Forms.TabPage();
+            this.propertyGrid9 = new System.Windows.Forms.PropertyGrid();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -81,7 +90,15 @@ namespace CGFX_Viewer_SharpDX
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.tabPage7.SuspendLayout();
+            this.tabPage8.SuspendLayout();
             this.tabPage9.SuspendLayout();
+            this.tabPage10.SuspendLayout();
+            this.tabPage12.SuspendLayout();
+            this.tabPage17.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -98,7 +115,8 @@ namespace CGFX_Viewer_SharpDX
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
-            this.saveToolStripMenuItem});
+            this.saveToolStripMenuItem,
+            this.closeToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -115,6 +133,13 @@ namespace CGFX_Viewer_SharpDX
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.saveToolStripMenuItem.Text = "Save";
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -295,6 +320,7 @@ namespace CGFX_Viewer_SharpDX
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.LUTS_PropertyGrid);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -303,8 +329,17 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage4.Text = "LUTS";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // LUTS_PropertyGrid
+            // 
+            this.LUTS_PropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LUTS_PropertyGrid.Location = new System.Drawing.Point(3, 3);
+            this.LUTS_PropertyGrid.Name = "LUTS_PropertyGrid";
+            this.LUTS_PropertyGrid.Size = new System.Drawing.Size(196, 453);
+            this.LUTS_PropertyGrid.TabIndex = 0;
+            // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.propertyGrid4);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -313,8 +348,17 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage5.Text = "Materials";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // propertyGrid4
+            // 
+            this.propertyGrid4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid4.Location = new System.Drawing.Point(3, 3);
+            this.propertyGrid4.Name = "propertyGrid4";
+            this.propertyGrid4.Size = new System.Drawing.Size(196, 453);
+            this.propertyGrid4.TabIndex = 0;
+            // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.propertyGrid5);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
@@ -323,8 +367,17 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage6.Text = "Shaders";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
+            // propertyGrid5
+            // 
+            this.propertyGrid5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid5.Location = new System.Drawing.Point(3, 3);
+            this.propertyGrid5.Name = "propertyGrid5";
+            this.propertyGrid5.Size = new System.Drawing.Size(196, 453);
+            this.propertyGrid5.TabIndex = 0;
+            // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.CCAM_PropertyGrid);
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
@@ -333,8 +386,17 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage7.Text = "Cameras";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // CCAM_PropertyGrid
+            // 
+            this.CCAM_PropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CCAM_PropertyGrid.Location = new System.Drawing.Point(3, 3);
+            this.CCAM_PropertyGrid.Name = "CCAM_PropertyGrid";
+            this.CCAM_PropertyGrid.Size = new System.Drawing.Size(196, 453);
+            this.CCAM_PropertyGrid.TabIndex = 0;
+            // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.propertyGrid6);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
@@ -342,6 +404,14 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage8.TabIndex = 7;
             this.tabPage8.Text = "Lights";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // propertyGrid6
+            // 
+            this.propertyGrid6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid6.Location = new System.Drawing.Point(3, 3);
+            this.propertyGrid6.Name = "propertyGrid6";
+            this.propertyGrid6.Size = new System.Drawing.Size(196, 453);
+            this.propertyGrid6.TabIndex = 0;
             // 
             // tabPage9
             // 
@@ -364,6 +434,7 @@ namespace CGFX_Viewer_SharpDX
             // 
             // tabPage10
             // 
+            this.tabPage10.Controls.Add(this.propertyGrid7);
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
@@ -371,6 +442,14 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage10.TabIndex = 9;
             this.tabPage10.Text = "Environments";
             this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // propertyGrid7
+            // 
+            this.propertyGrid7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid7.Location = new System.Drawing.Point(3, 3);
+            this.propertyGrid7.Name = "propertyGrid7";
+            this.propertyGrid7.Size = new System.Drawing.Size(196, 453);
+            this.propertyGrid7.TabIndex = 0;
             // 
             // tabPage11
             // 
@@ -384,6 +463,7 @@ namespace CGFX_Viewer_SharpDX
             // 
             // tabPage12
             // 
+            this.tabPage12.Controls.Add(this.propertyGrid8);
             this.tabPage12.Location = new System.Drawing.Point(4, 22);
             this.tabPage12.Name = "tabPage12";
             this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
@@ -391,6 +471,14 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage12.TabIndex = 11;
             this.tabPage12.Text = "Texture Animations";
             this.tabPage12.UseVisualStyleBackColor = true;
+            // 
+            // propertyGrid8
+            // 
+            this.propertyGrid8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid8.Location = new System.Drawing.Point(3, 3);
+            this.propertyGrid8.Name = "propertyGrid8";
+            this.propertyGrid8.Size = new System.Drawing.Size(196, 453);
+            this.propertyGrid8.TabIndex = 0;
             // 
             // tabPage13
             // 
@@ -433,12 +521,21 @@ namespace CGFX_Viewer_SharpDX
             // 
             // tabPage17
             // 
+            this.tabPage17.Controls.Add(this.propertyGrid9);
             this.tabPage17.Location = new System.Drawing.Point(4, 22);
             this.tabPage17.Name = "tabPage17";
             this.tabPage17.Size = new System.Drawing.Size(202, 459);
             this.tabPage17.TabIndex = 16;
             this.tabPage17.Text = "Emitters";
             this.tabPage17.UseVisualStyleBackColor = true;
+            // 
+            // propertyGrid9
+            // 
+            this.propertyGrid9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid9.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid9.Name = "propertyGrid9";
+            this.propertyGrid9.Size = new System.Drawing.Size(202, 459);
+            this.propertyGrid9.TabIndex = 0;
             // 
             // Form1
             // 
@@ -472,7 +569,15 @@ namespace CGFX_Viewer_SharpDX
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage8.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage12.ResumeLayout(false);
+            this.tabPage17.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -514,6 +619,15 @@ namespace CGFX_Viewer_SharpDX
 		private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         private UserControl1 userControl11;
+        private System.Windows.Forms.PropertyGrid propertyGrid4;
+        private System.Windows.Forms.PropertyGrid propertyGrid5;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.PropertyGrid LUTS_PropertyGrid;
+        private System.Windows.Forms.PropertyGrid CCAM_PropertyGrid;
+        private System.Windows.Forms.PropertyGrid propertyGrid6;
+        private System.Windows.Forms.PropertyGrid propertyGrid7;
+        private System.Windows.Forms.PropertyGrid propertyGrid8;
+        private System.Windows.Forms.PropertyGrid propertyGrid9;
     }
 }
 

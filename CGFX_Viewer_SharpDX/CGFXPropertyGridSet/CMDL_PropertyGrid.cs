@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.Design;
+using CGFXLibrary;
+using CGFXLibrary.CGFXSection;
 
 namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
 {
@@ -16,9 +18,9 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         public byte[] CMDL_Revision { get; set; } //0x4
         public int CMDL_ModelNameOffset { get; set; } //0x4
 
-        public List<CGFXFormat.UserData> UserData_List = new List<CGFXFormat.UserData>();
+        public List<CGFXFormat.CGFXData> UserData_List = new List<CGFXFormat.CGFXData>();
         [Editor(typeof(CGFX_CustomPropertyGridClass.UserDataDictionaryEditor), typeof(UITypeEditor))]
-        public List<CGFXFormat.UserData> userDataList { get => UserData_List; set => UserData_List = value; }
+        public List<CGFXFormat.CGFXData> userDataList { get => UserData_List; set => UserData_List = value; }
 
 
         //public int CMDL_UserDataDICTCount { get; set; } //0x4
@@ -41,7 +43,7 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
                 Unknown_Byte6 = new List<byte>().ToArray();
             }
 
-            public CMDL_UnknownSection1(CGFXFormat.CGFXSection.CMDL.CMDL_UnknownSection1 cMDL_UnknownSection1)
+            public CMDL_UnknownSection1(CMDL.CMDL_UnknownSection1 cMDL_UnknownSection1)
 			{
                 Unknown_Byte5 = cMDL_UnknownSection1.Unknown_Byte5;
                 Unknown_Byte6 = cMDL_UnknownSection1.Unknown_Byte6;
@@ -53,28 +55,28 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         //public DICT AnimationDICT { get; set; }
 
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
-        public CGFXFormat.Transform.Scale Scale { get; set; }
+        public Transform.Scale Scale { get; set; }
 
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
-        public CGFXFormat.Transform.Rotate Rotate { get; set; }
+        public Transform.Rotate Rotate { get; set; }
 
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
-        public CGFXFormat.Transform.Translate Translate { get; set; }
+        public Transform.Translate Translate { get; set; }
 
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
-        public CGFXFormat.Matrix.LocalMatrix Local_Matrix { get; set; }
+        public MatrixData.LocalMatrix Local_Matrix { get; set; }
 
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
-        public CGFXFormat.Matrix.WorldMatrix_Transform WorldMatrix_Transform { get; set; }
+        public MatrixData.WorldMatrix_Transform WorldMatrix_Transform { get; set; }
 
 
         //Mesh
         public int MeshSOBJEntries { get; set; } //0x4
         public int MeshSOBJListOffset { get; set; } //0x4
 
-        public List<CGFXFormat.CGFXSection.CMDL.MeshData> MeshData_List = new List<CGFXFormat.CGFXSection.CMDL.MeshData>();
+        public List<CMDL.MeshData> MeshData_List = new List<CMDL.MeshData>();
         //[Editor(typeof(CGFX_CustomPropertyGridClass.UserDataDictionaryEditor), typeof(UITypeEditor))]
-        public List<CGFXFormat.CGFXSection.CMDL.MeshData> meshDataList { get => MeshData_List; set => MeshData_List = value; }
+        public List<CMDL.MeshData> meshDataList { get => MeshData_List; set => MeshData_List = value; }
 
         //public class MeshData
         //{
@@ -87,21 +89,21 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         public int MTOB_DICTOffset { get; set; } //0x4
 
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
-        public CGFXFormat.DICT MTOB_DICT { get; set; }
+        public DICT MTOB_DICT { get; set; }
 
         //Shape
         public int NumOfVertexInfoSOBJEntries_2 { get; set; } //0x4
         public int VertexInfoSOBJListOffset_2 { get; set; } //0x4
 
-        public List<CGFXFormat.CGFXSection.CMDL.ShapeData> ShapeData_List = new List<CGFXFormat.CGFXSection.CMDL.ShapeData>();
+        public List<CMDL.ShapeData> ShapeData_List = new List<CMDL.ShapeData>();
         //[Editor(typeof(CGFX_CustomPropertyGridClass.UserDataDictionaryEditor), typeof(UITypeEditor))]
-        public List<CGFXFormat.CGFXSection.CMDL.ShapeData> shapeDataList { get => ShapeData_List; set => ShapeData_List = value; }
+        public List<CMDL.ShapeData> shapeDataList { get => ShapeData_List; set => ShapeData_List = value; }
 
         //UnknownDICT
         public int NumOfUnknownDICTEntries { get; set; }
         public int UnknownDICTOffset { get; set; }
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
-        public CGFXFormat.DICT UnknownDICT { get; set; }
+        public DICT UnknownDICT { get; set; }
 
         public bool IsVisible { get; set; } //0x1
         public bool IsNonuniformScalable { get; set; } //0x1
@@ -112,11 +114,11 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         //public byte[] UnknownData4 { get; set; }
 
 
-        public CMDL_PropertyGrid(CGFXFormat.CGFXSection.CMDL CMDLData)
+        public CMDL_PropertyGrid(CMDL CMDLData)
 		{
             Name = CMDLData.Name;
             CMDL_Revision = CMDLData.CMDL_Revision;
-            userDataList = CMDLData.CMDL_UserData.DICT_Entries.Select(x => x.CGFXData.UserData).ToList();
+            userDataList = CMDLData.CMDL_UserData.DICT_Entries.Select(x => x.CGFXData).ToList();
 
             IsBranchVisibleFlag1 = CMDLData.IsBranchVisibleFlag1;
             IsBranchVisibleFlag2 = CMDLData.IsBranchVisibleFlag2;

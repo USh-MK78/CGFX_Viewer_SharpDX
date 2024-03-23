@@ -8,14 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAttribute
 {
     public partial class VertexAttributeEditorForm : Form
     {
-        public List<CGFXFormat.SOBJ.Shape.VertexAttribute> vertexAttribute_List { get; set; }
+        public List<SOBJ.Shape.VertexAttribute> vertexAttribute_List { get; set; }
 
-        public VertexAttributeEditorForm(List<CGFXFormat.SOBJ.Shape.VertexAttribute> vertexAttributes)
+        public VertexAttributeEditorForm(List<SOBJ.Shape.VertexAttribute> vertexAttributes)
         {
             InitializeComponent();
             vertexAttribute_List = vertexAttributes;
@@ -52,11 +53,11 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
             {
                 VertexAttributeEditor_PG_Main.SelectedObject = new VertexAttribute_PropertyGrid(vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex]);
 
-                if (vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Params != new CGFXFormat.SOBJ.Shape.VertexAttribute.Param())
+                if (vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Params != new SOBJ.Shape.VertexAttribute.Param())
                 {
                     VertexAttributeEditor_PG_Param.SelectedObject = new Param.Param_PropertyGrid(vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Params);
                 }
-                if (vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Streams != new CGFXFormat.SOBJ.Shape.VertexAttribute.Stream())
+                if (vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Streams != new SOBJ.Shape.VertexAttribute.Stream())
                 {
                     VertexAttributeEditor_PG_Stream.SelectedObject = new Stream.Stream_PropertyGrid(vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Streams);
                     //VertexAttributeEditor_TabMain

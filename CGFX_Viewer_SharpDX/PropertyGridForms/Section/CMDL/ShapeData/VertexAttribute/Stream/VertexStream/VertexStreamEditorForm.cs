@@ -7,20 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAttribute.Stream.VertexStream
 {
     public partial class VertexStreamEditorForm : Form
     {
-        public List<CGFXFormat.SOBJ.Shape.VertexAttribute.Stream.VertexStream> vertexStream_list { get; set; }
+        public List<SOBJ.Shape.VertexAttribute.Stream.VertexStream> vertexStream_list { get; set; }
 
-        public VertexStreamEditorForm(List<CGFXFormat.SOBJ.Shape.VertexAttribute.Stream.VertexStream> vertexStreams)
+        public VertexStreamEditorForm(List<SOBJ.Shape.VertexAttribute.Stream.VertexStream> vertexStreams)
         {
             InitializeComponent();
             vertexStream_list = vertexStreams;
         }
 
-        Form1 Form;
+        public Form1 Form;
 
         private void VertexStreamForm_Load(object sender, EventArgs e)
         {

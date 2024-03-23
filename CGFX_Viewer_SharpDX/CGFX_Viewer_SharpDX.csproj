@@ -26,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,6 +37,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AssimpNet, Version=4.1.0.0, Culture=neutral, PublicKeyToken=0d51b391f59f42a6, processorArchitecture=MSIL">
@@ -54,7 +56,7 @@
       <HintPath>..\packages\HelixToolkit.Wpf.SharpDX.2.23.0\lib\net462\HelixToolkit.Wpf.SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="LibEveryFileExplorer">
-      <HintPath>..\..\LibEveryFileExplorer.dll</HintPath>
+      <HintPath>.\LibEveryFileExplorer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
@@ -97,6 +99,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -112,16 +115,26 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CGFXFormat.cs" />
-    <Compile Include="CGFXHelper.cs" />
+    <Compile Include="BitOperationTool.cs" />
+    <Compile Include="CGFXEffectManager.cs" />
+    <Compile Include="CGFXPropertyGridSet\CCAM_PropertyGrid.cs" />
+    <Compile Include="CGFXPropertyGridSet\CENV_PropertyGrid.cs" />
     <Compile Include="CGFXPropertyGridSet\CFOG_PropertyGrid.cs" />
     <Compile Include="CGFXPropertyGridSet\CGFX_CustomPropertyGridClass.cs" />
     <Compile Include="CGFXPropertyGridSet\CGFX_UserDataPropertyGrid.cs" />
     <Compile Include="CGFXPropertyGridSet\CMDL_MeshData_PropertyGrid.cs" />
     <Compile Include="CGFXPropertyGridSet\CMDL_PropertyGrid.cs" />
+    <Compile Include="CGFXPropertyGridSet\LUTS_PropertyGrid.cs" />
     <Compile Include="CGFXPropertyGridSet\MTOB_PropertyGrid.cs" />
     <Compile Include="CGFXPropertyGridSet\TXOB_PropertyGrid.cs" />
-    <Compile Include="CGFX\TextureFormat\EFETextures.cs" />
+    <Compile Include="MaterialComponent\ComponentHelper.cs" />
+    <Compile Include="MaterialComponent\Data.cs" />
+    <Compile Include="MaterialComponent\Material\CGFXMaterial.cs" />
+    <Compile Include="MaterialComponent\Material\CGFXMaterialCore.cs" />
+    <Compile Include="MaterialComponent\Material\CGFXMaterialVariable.cs" />
+    <Compile Include="MaterialComponent\Material\CustomMaterialVariableBase.cs" />
+    <Compile Include="MaterialComponent\Mesh\CGFXMeshModel3D.cs" />
+    <Compile Include="EffectManagerHelper.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +142,20 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="HTK_3DES_WpfSharpDX.cs" />
+    <Compile Include="MeshBuilderComponent\BoundManager\CustomBoundManager.cs" />
+    <Compile Include="MeshBuilderComponent\Node\CGFXGeometryNode.cs" />
+    <Compile Include="MeshBuilderComponent\Node\CGFXMaterialGeometryNode.cs" />
+    <Compile Include="MeshBuilderComponent\Node\CGFXMeshNode.cs" />
+    <Compile Include="MeshBuilderComponent\Builder\BufferMeshBuilderHelper.cs" />
+    <Compile Include="MeshBuilderComponent\Builder\CGFXMeshBufferModel.cs" />
+    <Compile Include="MeshBuilderComponent\Builder\CGFXGeometryBufferModel.cs" />
+    <Compile Include="MeshBuilderComponent\Builder\CustomMeshBuilder.cs" />
+    <Compile Include="MeshBuilderComponent\ComponentHelper.cs" />
+    <Compile Include="MeshBuilderComponent\Mesh\GoemetryModel\CGFXGeometryModel3D.cs" />
+    <Compile Include="MeshBuilderComponent\Mesh\GoemetryModel\CGFXMaterialGeometryModel3D.cs" />
+    <Compile Include="MeshBuilderComponent\Mesh\GoemetryModel\CGFXMeshGeometryModel3D.cs" />
+    <Compile Include="MeshBuilderComponent\Mesh\MeshGeometry\CGFXGeometry3D.cs" />
+    <Compile Include="MeshBuilderComponent\Mesh\MeshGeometry\CGFXMeshGeometry3D.cs" />
     <Compile Include="PropertyGridForms\General\Matrix\MatrixViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,6 +209,13 @@
       <DependentUpon>VertexAttributeEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PropertyGridForms\Section\CMDL\ShapeData\VertexAttribute\VertexAttribute_PropertyGrid.cs" />
+    <Compile Include="PropertyGridForms\Section\MTOB\SHDRData\SHDRViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropertyGridForms\Section\MTOB\SHDRData\SHDRViewer.Designer.cs">
+      <DependentUpon>SHDRViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyGridForms\Section\MTOB\SHDRData\SHDRViewer_PropertyGrid.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
@@ -219,6 +253,9 @@
     <EmbeddedResource Include="PropertyGridForms\Section\CMDL\ShapeData\VertexAttribute\VertexAttributeEditorForm.resx">
       <DependentUpon>VertexAttributeEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PropertyGridForms\Section\MTOB\SHDRData\SHDRViewer.resx">
+      <DependentUpon>SHDRViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -233,14 +270,22 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CGFX\Section\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CGFXLibrary\CGFXLibrary.csproj">
+      <Project>{c3f6783d-8407-446e-ab92-ee827e9fa436}</Project>
+      <Name>CGFXLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LockBitImageTools\LockBitImageTools.csproj">
+      <Project>{d689b11b-79da-401b-aa6b-f2bf4f785cf0}</Project>
+      <Name>LockBitImageTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.Design;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAttribute.Stream.VertexStream
 {
@@ -17,8 +18,8 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
         public int VertexStreamsOffset { get; set; }
 
         public Flags Flags { get; set; }
-        public CGFX_Viewer_SharpDX.VertexAttribute.Usage VertexAttributeUsageFlag { get; set; }
-        public CGFX_Viewer_SharpDX.VertexAttribute.Flag VertexAttributeFlag { get; set; }
+        public CGFXLibrary.VertexAttribute.Usage VertexAttributeUsageFlag { get; set; }
+        public CGFXLibrary.VertexAttribute.Flag VertexAttributeFlag { get; set; }
 
         public int BufferObject { get; set; }
         public int LocationFlag { get; set; } //0x10
@@ -57,7 +58,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
                 RGBA = 4
             }
 
-            public Component(CGFXFormat.SOBJ.Shape.VertexAttribute.Stream.VertexStream.Component component)
+            public Component(SOBJ.Shape.VertexAttribute.Stream.VertexStream.Component component)
             {
                 Flags = component.Flags;
                 ComponentCount = component.ComponentCount;
@@ -73,7 +74,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
         public float Scale { get; set; }
         public int Offset { get; set; }
 
-        public VertexStream_PropertyGrid(CGFXFormat.SOBJ.Shape.VertexAttribute.Stream.VertexStream vertexStream)
+        public VertexStream_PropertyGrid(SOBJ.Shape.VertexAttribute.Stream.VertexStream vertexStream)
         {
             VertexStreamsOffset = vertexStream.VertexStreamsOffset;
             VertexAttributeUsageFlag = vertexStream.VertexAttributeUsageFlag;
@@ -99,8 +100,8 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
             VertexStreamsOffset = 0;
 
             Flags = new Flags(new byte[] { 0x00, 0x00, 0x00, 0x00 });
-            VertexAttributeUsageFlag = new CGFX_Viewer_SharpDX.VertexAttribute.Usage(-1);
-            VertexAttributeFlag = new CGFX_Viewer_SharpDX.VertexAttribute.Flag(-1);
+            VertexAttributeUsageFlag = new CGFXLibrary.VertexAttribute.Usage(-1);
+            VertexAttributeFlag = new CGFXLibrary.VertexAttribute.Flag(-1);
 
             BufferObject = 0;
             LocationFlag = 0;
@@ -127,7 +128,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
             IWindowsFormsEditorService svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             if (svc != null && value != null)
             {
-                VertexStreamEditorForm form = new VertexStreamEditorForm(value as List<CGFXFormat.SOBJ.Shape.VertexAttribute.Stream.VertexStream>);
+                VertexStreamEditorForm form = new VertexStreamEditorForm(value as List<SOBJ.Shape.VertexAttribute.Stream.VertexStream>);
                 form.ShowDialog();
 
                 value = form.vertexStream_list;

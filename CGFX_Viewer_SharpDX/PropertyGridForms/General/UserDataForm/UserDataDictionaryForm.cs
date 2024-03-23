@@ -7,14 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.Forms.General.UserDataForm
 {
 	public partial class UserDataDictionaryForm : Form
 	{
-		public List<CGFXFormat.UserData> userData_List { get; set; }
+		public List<CGFXFormat.CGFXData> userData_List { get; set; }
 
-		public UserDataDictionaryForm(List<CGFXFormat.UserData> userDataDicts)
+		public UserDataDictionaryForm(List<CGFXFormat.CGFXData> userDataDicts)
 		{
 			InitializeComponent();
 			userData_List = userDataDicts;
@@ -32,8 +33,21 @@ namespace CGFX_Viewer_SharpDX.Forms.General.UserDataForm
 
 				for(int i = 0; i < userData_List.Count; i++)
 				{
-					UDList.Add(i + " : " + userData_List[i].Type.ToString());
-				}
+					if (userData_List[i].String_Data != null)
+					{
+                        UDList.Add(i + " : " + userData_List[i].String_Data.ToString());
+                    }
+                    else if (userData_List[i].Int32_Data != null)
+                    {
+                        UDList.Add(i + " : " + userData_List[i].Int32_Data.ToString());
+                    }
+                    else if (userData_List[i].RealNumber_Data != null)
+                    {
+                        UDList.Add(i + " : " + userData_List[i].RealNumber_Data.ToString());
+                    }
+
+                    //UDList.Add(i + " : " + userData_List[i].Type.ToString());
+                }
 
 				listBox1.Items.AddRange(UDList.ToArray());
 			}

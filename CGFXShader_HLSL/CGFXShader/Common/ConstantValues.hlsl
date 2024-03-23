@@ -1,0 +1,126 @@
+#ifndef CONSTANTVALUES_HLSL
+#define CONSTANTVALUES_HLSL
+#pragma pack_matrix( row_major )
+
+//--------------LAYERCONFIG (Setting0)----------------//
+
+#define TYPE_SPOT 1
+#define TYPE_DISTRIBUTION_0 2
+#define TYPE_DISTRIBUTION_1 3
+#define TYPE_REFLECTION_R 4
+#define TYPE_REFLECTION_G 5
+#define TYPE_REFLECTION_B 6
+#define TYPE_FRESNEL 7
+
+//--------------LAYERCONFIG (Setting1)----------------//
+
+
+//--------------COMBINER_STAGE_EQUATION----------------// (OK)
+
+#define A 0
+#define A_MULTIPLY_B 1
+#define A_ADD_B 2
+#define A_ADD_B_SUB_NOUGHT_PT_FIVE 3
+#define A_MULTIPLY_C_ADD_B_MULTIPLY_BRKT_ONE_SUB_C_BRKT 4
+#define A_SUB_B 5
+#define RGB_DOT_BRKT_A_B_BRKT 6
+#define RGBA_DOT_BRKT_A_B_BRKT 7
+#define BRKT_A_ADD_B_BRKT_MULTIPLY_C 8
+#define BRKT_A_MULTIPLY_B_BRKT_ADD_C 9
+
+//--------------COMBINER_STAGE_SOURCE----------------// (OK)
+
+#define OUTPUT_VERTEXSHADER 0
+#define PRIMARY_COLOR 1
+#define SECONDARY_COLOR 2
+#define TEXTURE0 3
+#define TEXTURE1 4
+#define TEXTURE2 5
+#define TEXTURE3 6
+#define PREVIOUS_STEP_BUFFER 13
+#define CONSTANTCOLOR 14
+#define PREVIOUS_STEP_RESULT 15
+
+
+//--------------COMBINER_STAGE_COLOR_OPERAND----------------// (OK)
+
+#define OPERAND_COLOR_RGB 0
+#define OPERAND_COLOR_ONE_SUB_RGB 1
+#define OPERAND_COLOR_A 2
+#define OPERAND_COLOR_ONE_SUB_A 3
+#define OPERAND_COLOR_R 4
+#define OPERAND_COLOR_ONE_SUB_R 5
+#define OPERAND_COLOR_G 6
+#define OPERAND_COLOR_ONE_SUB_G 7
+#define OPERAND_COLOR_B 8
+#define OPERAND_COLOR_ONE_SUB_B 9
+
+
+//--------------COMBINER_STAGE_ALPHA_OPERAND----------------// (OK)
+
+#define OPERAND_ALPHA_A 0
+#define OPERAND_ALPHA_ONE_SUB_A 1
+#define OPERAND_ALPHA_R 2
+#define OPERAND_ALPHA_ONE_SUB_R 3
+#define OPERAND_ALPHA_G 4
+#define OPERAND_ALPHA_ONE_SUB_G 5
+#define OPERAND_ALPHA_B 6
+#define OPERAND_ALPHA_ONE_SUB_B 7
+
+
+//--------------BLEND_MODE (Setting0)----------------//
+
+#define BLEND 1
+#define SEPARATE 2
+#define LOGICAL_OPERATION 3
+#define NONE 4
+
+
+//--------------BLEND_MODE_EQUATION (Setting0)----------------//
+
+#define SRC_ADD_DEST 0
+#define SRC_SUB_DEST 1
+#define DEST_SUB_SRC 2
+#define MIN_SRC_DEST 3
+#define MAX_SRC_DEST 4
+
+
+//--------------BLEND_MODE_ELEMENT (BLEND, SEPARATE)----------------//
+
+#define ZERO 0
+#define ONE 1
+#define COMBINER_OUT_RGB 2
+#define ONE_SUB_COMBINER_RGB 3
+#define FRAMEBUFFER_OUT_RGB 4
+#define ONE_SUB_FRAMEBUFFER_RGB 5
+#define COMBINER_OUT_A 6
+#define ONE_SUB_COMBINER_A 7
+#define FRAMEBUFFER_OUT_A 8
+#define ONE_SUB_FRAMEBUFFER_A 9
+#define BLEND_RGB 10
+#define ONE_SUB_BLEND_RGB 11
+#define BLEND_A 12
+#define ONE_SUB_BLEND_A 13
+#define MIN_BRKT_COMBINER_OUT_A_ONE_SUB_FRAMEBUFFER_A_BRKT 14
+
+
+//--------------BLEND_MODE_ELEMENT (LOGICAL)----------------//
+
+#define SET_ALL_BIT_ZERO 0
+#define SET_ALL_BIT_ONE 1
+#define COMBINER_OUT 2
+#define FRAMEBUFFER 3
+#define NOT_COMBINER_OUT 4
+#define NOT_FRAMEBUFFER_OUT 5
+#define COMBINER_OUT_AND_FRAMEBUFFER 6
+#define COMBINER_OUT_OR_FRAMEBUFFER 7
+#define COMBINER_OUT_XOR_FRAMEBUFFER 8
+#define COMBINER_OUT_AND_NOTFRAMEBUFFER 9 //Conbiner Out AND (NOT FrameBuffer)
+#define COMBINER_OUT_OR_NOTFRAMEBUFFER 10 //Conbiner Out OR (NOT FrameBuffer)
+#define NOTCOMBINER_OUT_AND_FRAMEBUFFER 11
+#define NOTCOMBINER_OUT_OR_FRAMEBUFFER 12
+#define NOT_COMBINER_OUT_AND_FRAMEBUFFER 13
+#define NOT_COMBINER_OUT_OR_FRAMEBUFFER 14
+#define NOT_COMBINER_OUT_XOR_FRAMEBUFFER 15
+
+#endif

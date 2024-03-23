@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CGFXLibrary;
+using CGFXLibrary.CGFXSection;
 
 namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
 {
@@ -30,11 +32,11 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         public byte[] UnknownByte6 { get; set; }
 
         public int TexFormat { get; set; }
-        public CGFX_Viewer_SharpDX.CGFX.TextureFormat.Textures.ImageFormat ImageFormat
+        public CGFX.TextureFormat.Textures.ImageFormat ImageFormat
         {
             get
             {
-                return (CGFX_Viewer_SharpDX.CGFX.TextureFormat.Textures.ImageFormat)TexFormat;
+                return (CGFX.TextureFormat.Textures.ImageFormat)TexFormat;
             }
             set
             {
@@ -56,11 +58,11 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         {
             get
             {
-                return CGFX_Viewer_SharpDX.CGFX.TextureFormat.Textures.ToBitmap(TexData, TextureWidth, TextureHeight, ImageFormat);
+                return CGFX.TextureFormat.Textures.ToBitmap(TexData, TextureWidth, TextureHeight, ImageFormat);
             }
             set
             {
-                TexData = CGFX_Viewer_SharpDX.CGFX.TextureFormat.Textures.FromBitmap(value, ImageFormat);
+                TexData = CGFX.TextureFormat.Textures.FromBitmap(value, ImageFormat);
             }
         }
 
@@ -69,7 +71,7 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         public byte[] UnknownByte9 { get; set; }
         public byte[] UnknownByte10 { get; set; }
 
-        internal TXOB_PropertyGrid(CGFXFormat.CGFXSection.TXOB.Texture TXOBSection)
+        public TXOB_PropertyGrid(TXOB.Texture TXOBSection)
 		{
             TXOBName = TXOBSection.Name;
 

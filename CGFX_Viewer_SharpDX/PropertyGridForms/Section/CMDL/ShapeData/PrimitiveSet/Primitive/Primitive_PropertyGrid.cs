@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.Design;
+using CGFXLibrary;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.PrimitiveSet.Primitive
 {
@@ -16,9 +17,9 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.Primitive
         public int IndexStreamCount { get; set; }
         public int IndexStreamOffsetListOffset { get; set; }
 
-        public List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr> IndexStreamCtr_List = new List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr>();
+        public List<SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr> IndexStreamCtr_List = new List<SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr>();
         [Editor(typeof(IndexStreamCtr.IndexStreamCtrEditor), typeof(UITypeEditor))]
-        public List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr> IndexStreamCtrs { get => IndexStreamCtr_List; set => IndexStreamCtr_List = value; }
+        public List<SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr> IndexStreamCtrs { get => IndexStreamCtr_List; set => IndexStreamCtr_List = value; }
 
         public int BufferObjectCount { get; set; }
         public int BufferObjectListOffset { get; set; }
@@ -26,7 +27,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.Primitive
         public int Flags { get; set; }
         public int CommandAllocator { get; set; }
 
-        public Primitive_PropertyGrid(CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive primitive)
+        public Primitive_PropertyGrid(SOBJ.Shape.PrimitiveSet.Primitive primitive)
         {
             PrimitiveOffset = primitive.PrimitiveOffset;
             IndexStreamCount = primitive.IndexStreamCount;
@@ -54,7 +55,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.Primitive
             IWindowsFormsEditorService svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             if (svc != null && value != null)
             {
-                PrimitiveEditorForm form = new PrimitiveEditorForm(value as List<CGFXFormat.SOBJ.Shape.PrimitiveSet.Primitive>);
+                PrimitiveEditorForm form = new PrimitiveEditorForm(value as List<SOBJ.Shape.PrimitiveSet.Primitive>);
                 form.ShowDialog();
 
                 value = form.primitive_List;
