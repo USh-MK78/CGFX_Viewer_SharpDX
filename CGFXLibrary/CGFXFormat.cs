@@ -190,6 +190,8 @@ namespace CGFXLibrary
 
             public void Reader(BinaryReader br, byte[] BOM)
             {
+                //TODO : 列挙型ではなくビット演算を使用して解決できるようにする
+
                 if (EnableFlagValue == false)
                 {
                     CGFXDataSection.Read(br, BOM);
@@ -562,32 +564,5 @@ namespace CGFXLibrary
                 EnableFlagValue = EnableFlag;
             }
         }
-
-        #region Backup
-        //public void Test<T>(BinaryReader br, byte[] BOM, bool HasHeader, bool HasIdentFlag)
-        //{
-        //    if (HasIdentFlag == true)
-        //    {
-
-        //    }
-        //    else
-        //    {
-
-        //    }
-
-        //    if (HasHeader == true)
-        //    {
-        //        string dentFlagOrHeaderStr = System.Text.Encoding.UTF8.GetString(IdentificationFlags);
-        //        if (dentFlagOrHeaderStr == "") return;
-        //    }
-        //    else
-        //    {
-        //        if (typeof(T) == typeof(ValueSet))
-        //        {
-
-        //        }
-        //    }
-        //}
-        #endregion
     }
 }

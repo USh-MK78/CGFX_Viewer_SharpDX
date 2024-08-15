@@ -142,38 +142,6 @@ namespace CGFXLibrary.CGFXSection
             }
         }
 
-        public CFOG()
-        {
-            CFOG_Header = "CFOG".ToCharArray();
-            CFOG_UnknownBytes_2 = new List<byte>().ToArray();
-            CFOG_NameStringOffset = 0;
-            CFOG_NumOfUserDataDICTEntries = 0;
-            CFOG_UserDataDICTOffset = 0;
-            UserDataDict = new DICT();
-            FogFlipSettings = new FogFlipSetting(1);
-            CFOG_UnknownBytes_5 = new byte[4];
-            CFOG_UnknownBytes_6 = new byte[4];
-            CFOG_UnknownBytes_7 = new byte[4];
-            CFOG_UnknownBytes_8 = new byte[4];
-            CFOG_CFOGAnimation_DICTOffset = 0;
-
-            FogAnimationDICT = new DICT();
-            ColorDICT = new DICT();
-
-
-            Transform_Scale = new Transform.Scale();
-            Transform_Rotate = new Transform.Rotate();
-            Transform_Translate = new Transform.Translate();
-            CFOG_4x4_Matrix = new MatrixData.LocalMatrix();
-            CFOG_4x4_Matrix_Transform = new MatrixData.WorldMatrix_Transform();
-            Color_RGBA = new CFOG_RGBA(0, 0, 0, 0);
-            CFOG_UnknownOffset1 = 0;
-            UnknownUserData = new CGFXData(null, true); //CGFXData.UD_FloatType.ValueSet
-
-            FogSettingOffset = 0;
-            CFOGSettings = new CFOGSetting();
-        }
-
         public void ReadCFOG(BinaryReader br, byte[] BOM)
         {
             EndianConvert endianConvert = new EndianConvert(BOM);
@@ -294,6 +262,37 @@ namespace CGFXLibrary.CGFXSection
         public override void Write(BinaryWriter bw, byte[] BOM = null)
         {
             throw new NotImplementedException();
+        }
+
+        public CFOG()
+        {
+            CFOG_Header = "CFOG".ToCharArray();
+            CFOG_UnknownBytes_2 = new byte[4];
+            CFOG_NameStringOffset = 0;
+            CFOG_NumOfUserDataDICTEntries = 0;
+            CFOG_UserDataDICTOffset = 0;
+            UserDataDict = new DICT();
+            FogFlipSettings = new FogFlipSetting(1);
+            CFOG_UnknownBytes_5 = new byte[4];
+            CFOG_UnknownBytes_6 = new byte[4];
+            CFOG_UnknownBytes_7 = new byte[4];
+            CFOG_UnknownBytes_8 = new byte[4];
+            CFOG_CFOGAnimation_DICTOffset = 0;
+
+            FogAnimationDICT = new DICT();
+            ColorDICT = new DICT();
+
+            Transform_Scale = new Transform.Scale();
+            Transform_Rotate = new Transform.Rotate();
+            Transform_Translate = new Transform.Translate();
+            CFOG_4x4_Matrix = new MatrixData.LocalMatrix();
+            CFOG_4x4_Matrix_Transform = new MatrixData.WorldMatrix_Transform();
+            Color_RGBA = new CFOG_RGBA(0, 0, 0, 0);
+            CFOG_UnknownOffset1 = 0;
+            UnknownUserData = new CGFXData(null, true);
+
+            FogSettingOffset = 0;
+            CFOGSettings = new CFOGSetting();
         }
     }
 }

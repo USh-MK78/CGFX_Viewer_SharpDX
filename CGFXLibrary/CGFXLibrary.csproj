@@ -79,6 +79,7 @@
     <Compile Include="CGFXSection\SHDR.cs" />
     <Compile Include="CGFXSection\TXOB.cs" />
     <Compile Include="DICT.cs" />
+    <Compile Include="EndianConvert.cs" />
     <Compile Include="IO\BinaryIOInterface.cs" />
     <Compile Include="MatrixData.cs" />
     <Compile Include="SOBJ_Format\MeshData\Mesh.cs" />

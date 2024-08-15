@@ -313,7 +313,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(UnknownDICTOffset, SeekOrigin.Current);
 
-                //No IdentFlag, NameOffset(0x4), Unknown(0x4)
+                //No IdentFlag
                 UnknownDICT.ReadDICT(br, BOM, false, new CGFXSection.DataComponent.NameSetData());
 
                 br.BaseStream.Position = Pos;

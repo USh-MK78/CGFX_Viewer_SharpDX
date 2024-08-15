@@ -11,53 +11,6 @@ using SharpDX;
 
 namespace CGFXLibrary
 {
-    public class EndianConvert
-	{
-        public enum Endian
-		{
-            BigEndian = 65534,
-            LittleEndian = 65279
-		}
-
-        public byte[] BOM { get; set; }
-        public Endian Endians => EndianCheck();
-
-        public EndianConvert(byte[] InputBOM)
-		{
-            BOM = InputBOM;
-		}
-
-        public Endian EndianCheck()
-		{
-            bool LE = BOM.SequenceEqual(new byte[] { 0xFF, 0xFE });
-            bool BE = BOM.SequenceEqual(new byte[] { 0xFE, 0xFF });
-
-            Endian BOMSetting = Endian.BigEndian;
-
-            if ((LE || BE) == true)
-            {
-                if (LE == true) BOMSetting = Endian.LittleEndian;
-                if (BE == true) BOMSetting = Endian.BigEndian;
-            }
-
-            return BOMSetting;
-        }
-
-        public byte[] Convert(byte[] Input)
-		{
-            if (Endians == Endian.BigEndian)
-			{
-                return Input.Reverse().ToArray();
-            }
-            if (Endians == Endian.LittleEndian)
-            {
-                return Input;
-            }
-
-            return Input;
-        }
-	}
-
     public class ReadByteLine
     {
         public List<byte> charByteList { get; set; }
@@ -128,115 +81,6 @@ namespace CGFXLibrary
         public int GetLength()
         {
             return charByteList.ToArray().Length;
-        }
-    }
-
-    public class DICTEntryFlags
-    {
-        public enum DICTRefBitFlag : uint
-        {
-            NONE = 0b_0000_0000_0000_0000_0000_0000_0000_0000,
-            F1 = 0b_0000_0000_0000_0000_0000_0000_0000_0001, //IsSectionData (DICT)
-            F2 = 0b_0000_0000_0000_0000_0000_0000_0000_0010, //
-            F3 = 0b_0000_0000_0000_0000_0000_0000_0000_0100, //???
-            F4 = 0b_0000_0000_0000_0000_0000_0000_0000_1000,
-            F5 = 0b_0000_0000_0000_0000_0000_0000_0001_0000,
-            F6 = 0b_0000_0000_0000_0000_0000_0000_0010_0000,
-            F7 = 0b_0000_0000_0000_0000_0000_0000_0100_0000,
-            F8 = 0b_0000_0000_0000_0000_0000_0000_1000_0000,
-            F9 = 0b_0000_0000_0000_0000_0000_0001_0000_0000, //UnknownFlag
-            F10 = 0b_0000_0000_0000_0000_0000_0010_0000_0000,
-            F11 = 0b_0000_0000_0000_0000_0000_0100_0000_0000,
-            F12 = 0b_0000_0000_0000_0000_0000_1000_0000_0000,
-            F13 = 0b_0000_0000_0000_0000_0001_0000_0000_0000,
-            F14 = 0b_0000_0000_0000_0000_0010_0000_0000_0000,
-            F15 = 0b_0000_0000_0000_0000_0100_0000_0000_0000,
-            F16 = 0b_0000_0000_0000_0000_1000_0000_0000_0000,
-
-            F17 = 0b_0000_0000_0000_0001_0000_0000_0000_0000,
-            F18 = 0b_0000_0000_0000_0010_0000_0000_0000_0000,
-            F19 = 0b_0000_0000_0000_0100_0000_0000_0000_0000,
-            F20 = 0b_0000_0000_0000_1000_0000_0000_0000_0000,
-            F21 = 0b_0000_0000_0001_0000_0000_0000_0000_0000,
-            F22 = 0b_0000_0000_0010_0000_0000_0000_0000_0000,
-            F23 = 0b_0000_0000_0100_0000_0000_0000_0000_0000,
-            F24 = 0b_0000_0000_1000_0000_0000_0000_0000_0000,
-            F25 = 0b_0000_0001_0000_0000_0000_0000_0000_0000,
-            F26 = 0b_0000_0010_0000_0000_0000_0000_0000_0000,
-            F27 = 0b_0000_0100_0000_0000_0000_0000_0000_0000,
-            F28 = 0b_0000_1000_0000_0000_0000_0000_0000_0000,
-            F29 = 0b_0001_0000_0000_0000_0000_0000_0000_0000,
-            F30 = 0b_0010_0000_0000_0000_0000_0000_0000_0000,
-            F31 = 0b_0100_0000_0000_0000_0000_0000_0000_0000,
-            F32 = 0b_1000_0000_0000_0000_0000_0000_0000_0000,
-
-            //F32_F1 = F32 | F1,
-            //CTEX_v0 = F30 | F3,
-            //CTEX_v1 = F30 | F5 | F1
-        }
-
-        public byte[] Bytes { get; set; }
-        public List<DICTRefBitFlag> DICTRefBitFlags => GetDICTRefBitFlags().ToList(); 
-
-        public uint GetIdentFlagUInt()
-        {
-            return BitConverter.ToUInt32(Bytes, 0);
-        }
-
-        public DICTRefBitFlag[] GetDICTRefBitFlags()
-        {
-            List<DICTRefBitFlag> CGFXIdentFlagList = new List<DICTRefBitFlag>();
-            DICTRefBitFlag flag = (DICTRefBitFlag)Enum.ToObject(typeof(DICTRefBitFlag), GetIdentFlagUInt());
-            if (flag.HasFlag(DICTRefBitFlag.NONE)) CGFXIdentFlagList.Add(DICTRefBitFlag.NONE);
-            if (flag.HasFlag(DICTRefBitFlag.F1)) CGFXIdentFlagList.Add(DICTRefBitFlag.F1);
-            if (flag.HasFlag(DICTRefBitFlag.F2)) CGFXIdentFlagList.Add(DICTRefBitFlag.F2);
-            if (flag.HasFlag(DICTRefBitFlag.F3)) CGFXIdentFlagList.Add(DICTRefBitFlag.F3);
-            if (flag.HasFlag(DICTRefBitFlag.F4)) CGFXIdentFlagList.Add(DICTRefBitFlag.F4);
-            if (flag.HasFlag(DICTRefBitFlag.F5)) CGFXIdentFlagList.Add(DICTRefBitFlag.F5);
-            if (flag.HasFlag(DICTRefBitFlag.F6)) CGFXIdentFlagList.Add(DICTRefBitFlag.F6);
-            if (flag.HasFlag(DICTRefBitFlag.F7)) CGFXIdentFlagList.Add(DICTRefBitFlag.F7);
-            if (flag.HasFlag(DICTRefBitFlag.F8)) CGFXIdentFlagList.Add(DICTRefBitFlag.F8);
-            if (flag.HasFlag(DICTRefBitFlag.F9)) CGFXIdentFlagList.Add(DICTRefBitFlag.F9);
-            if (flag.HasFlag(DICTRefBitFlag.F10)) CGFXIdentFlagList.Add(DICTRefBitFlag.F10);
-            if (flag.HasFlag(DICTRefBitFlag.F11)) CGFXIdentFlagList.Add(DICTRefBitFlag.F11);
-            if (flag.HasFlag(DICTRefBitFlag.F12)) CGFXIdentFlagList.Add(DICTRefBitFlag.F12);
-            if (flag.HasFlag(DICTRefBitFlag.F13)) CGFXIdentFlagList.Add(DICTRefBitFlag.F13);
-            if (flag.HasFlag(DICTRefBitFlag.F14)) CGFXIdentFlagList.Add(DICTRefBitFlag.F14);
-            if (flag.HasFlag(DICTRefBitFlag.F15)) CGFXIdentFlagList.Add(DICTRefBitFlag.F15);
-            if (flag.HasFlag(DICTRefBitFlag.F16)) CGFXIdentFlagList.Add(DICTRefBitFlag.F16);
-            if (flag.HasFlag(DICTRefBitFlag.F17)) CGFXIdentFlagList.Add(DICTRefBitFlag.F17);
-            if (flag.HasFlag(DICTRefBitFlag.F18)) CGFXIdentFlagList.Add(DICTRefBitFlag.F18);
-            if (flag.HasFlag(DICTRefBitFlag.F19)) CGFXIdentFlagList.Add(DICTRefBitFlag.F19);
-            if (flag.HasFlag(DICTRefBitFlag.F20)) CGFXIdentFlagList.Add(DICTRefBitFlag.F20);
-            if (flag.HasFlag(DICTRefBitFlag.F21)) CGFXIdentFlagList.Add(DICTRefBitFlag.F21);
-            if (flag.HasFlag(DICTRefBitFlag.F22)) CGFXIdentFlagList.Add(DICTRefBitFlag.F22);
-            if (flag.HasFlag(DICTRefBitFlag.F23)) CGFXIdentFlagList.Add(DICTRefBitFlag.F23);
-            if (flag.HasFlag(DICTRefBitFlag.F24)) CGFXIdentFlagList.Add(DICTRefBitFlag.F24);
-            if (flag.HasFlag(DICTRefBitFlag.F25)) CGFXIdentFlagList.Add(DICTRefBitFlag.F25);
-            if (flag.HasFlag(DICTRefBitFlag.F26)) CGFXIdentFlagList.Add(DICTRefBitFlag.F26);
-            if (flag.HasFlag(DICTRefBitFlag.F27)) CGFXIdentFlagList.Add(DICTRefBitFlag.F27);
-            if (flag.HasFlag(DICTRefBitFlag.F28)) CGFXIdentFlagList.Add(DICTRefBitFlag.F28);
-            if (flag.HasFlag(DICTRefBitFlag.F29)) CGFXIdentFlagList.Add(DICTRefBitFlag.F29);
-            if (flag.HasFlag(DICTRefBitFlag.F30)) CGFXIdentFlagList.Add(DICTRefBitFlag.F30);
-            if (flag.HasFlag(DICTRefBitFlag.F31)) CGFXIdentFlagList.Add(DICTRefBitFlag.F31);
-            if (flag.HasFlag(DICTRefBitFlag.F32)) CGFXIdentFlagList.Add(DICTRefBitFlag.F32);
-
-            return CGFXIdentFlagList.ToArray();
-        }
-
-        public DICTRefBitFlag GetFlags()
-        {
-            return (DICTRefBitFlag)Enum.ToObject(typeof(DICTRefBitFlag), GetIdentFlagUInt());
-        }
-
-        public DICTEntryFlags(uint value)
-        {
-            Bytes = BitConverter.GetBytes(value);
-        }
-
-        public DICTEntryFlags(byte[] bytes)
-        {
-            Bytes = bytes;
         }
     }
 
@@ -1266,36 +1110,17 @@ namespace CGFXLibrary
         }
     }
 
-    public class Misc
-    {
-        //public struct UVTransform
-        //{
-        //    public float Angle;
-        //    public Vector2 ScaleUV;
-        //    public Vector2 TranslateUV;
+    // [ Note ]
+    //
+    //    //if (Type == 0) UV = new UVTransform(-1, 0, 0, -1, 0, 0); //Default(?)
+    //    //if (Type == 1) matrix = new Matrix(-1, 0, 0, -1, 0, 0);
+    //    //if (Type == 2) matrix = new Matrix(1, 0, 0, 1, 0, 0);
+    //    //if (Type == 3) matrix = new Matrix(0, -1, -1, 0, 0, 0);
 
-        //    public UVTransform(float Angle, Vector2 ScaleUV, Vector2 TranslateUV)
-        //    {
-        //        this.Angle = Angle;
-        //        this.ScaleUV = ScaleUV;
-        //        this.TranslateUV = TranslateUV;
-        //    }
-        //}
-
-
-        //public static UVTransform GetUVTransform(int Type)
-        //{
-        //    //if (Type == 0) UV = new UVTransform(-1, 0, 0, -1, 0, 0); //Default(?)
-        //    //if (Type == 1) matrix = new Matrix(-1, 0, 0, -1, 0, 0);
-        //    //if (Type == 2) matrix = new Matrix(1, 0, 0, 1, 0, 0);
-        //    //if (Type == 3) matrix = new Matrix(0, -1, -1, 0, 0, 0);
-
-        //    UVTransform UV = new UVTransform();
-        //    if (Type == 0) UV = new UVTransform(Convert.ToSingle(HTK_3DES_WpfSharpDX.TSRSystem.AngleToRadian(0)), new Vector2(-1, -1), new Vector2(0, 0)); //Default(?)
-        //    else if (Type == 1) UV = new UVTransform(Convert.ToSingle(HTK_3DES_WpfSharpDX.TSRSystem.AngleToRadian(0)), new Vector2(-1, -1), new Vector2(0, 0));
-        //    else if (Type == 2) UV = new UVTransform(0, new Vector2(1, 1), new Vector2(0, 0));
-        //    else if (Type == 3) UV = new UVTransform(Convert.ToSingle(HTK_3DES_WpfSharpDX.TSRSystem.AngleToRadian(90)), new Vector2(-1, -1), new Vector2(0, 0));
-        //    return UV;
-        //}
-    }
+    //    UVTransform UV = new UVTransform();
+    //    if (Type == 0) UV = new UVTransform(Convert.ToSingle(HTK_3DES_WpfSharpDX.TSRSystem.AngleToRadian(0)), new Vector2(-1, -1), new Vector2(0, 0)); //Default(?)
+    //    else if (Type == 1) UV = new UVTransform(Convert.ToSingle(HTK_3DES_WpfSharpDX.TSRSystem.AngleToRadian(0)), new Vector2(-1, -1), new Vector2(0, 0));
+    //    else if (Type == 2) UV = new UVTransform(0, new Vector2(1, 1), new Vector2(0, 0));
+    //    else if (Type == 3) UV = new UVTransform(Convert.ToSingle(HTK_3DES_WpfSharpDX.TSRSystem.AngleToRadian(90)), new Vector2(-1, -1), new Vector2(0, 0));
+    //    return UV;
 }

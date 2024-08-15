@@ -97,76 +97,74 @@ namespace CGFX_Viewer_SharpDX
                 Filter = "bcmdl file|*.bcmdl|All file|*.*"
             };
 
-            if (Open_CGFX.ShowDialog() != DialogResult.OK) return;
-
-            System.IO.FileStream fs1 = new FileStream(Open_CGFX.FileName, FileMode.Open, FileAccess.Read);
-            BinaryReader br1 = new BinaryReader(fs1);
-
-            CGFX = new CGFXFormat.CGFX();
-            CGFX.ReadCGFX(br1);
-
-            #region TreeView
-            treeView1.HideSelection = false;
-            List<string> SectionNameList = CGFXFormat.GetCGFXEntryNameArray().ToList();
-
-            List<TreeNode> SectionNodeList = new List<TreeNode>();
-            for (int i = 0; i < SectionNameList.Count; i++)
+            if (Open_CGFX.ShowDialog() == DialogResult.OK)
             {
-                List<TreeNode> EntryNameList = new List<TreeNode>();
-                foreach (var sw in CGFX.DICTAndSectionData.Keys.Where(x => x == (CGFXFormat.CGFXEntryData)Enum.Parse(typeof(CGFXFormat.CGFXEntryData), SectionNameList[i])).ToList())
+                System.IO.FileStream fs = new FileStream(Open_CGFX.FileName, FileMode.Open, FileAccess.Read);
+                BinaryReader br = new BinaryReader(fs);
+
+                CGFX = new CGFXFormat.CGFX();
+                CGFX.ReadCGFX(br);
+
+                #region TreeView
+                treeView1.HideSelection = false;
+                List<string> SectionNameList = CGFXFormat.GetCGFXEntryNameArray().ToList();
+
+                List<TreeNode> SectionNodeList = new List<TreeNode>();
+                for (int i = 0; i < SectionNameList.Count; i++)
                 {
-                    //var yt = CGFX.DICTAndSectionData[sw].DICT_Entries.Select(x => new TreeNode(x.Name)).ToList();
-                    //EntryNameList.AddRange(yt.ToArray());
-
-                    foreach (var r in CGFX.DICTAndSectionData[sw].DICT_Entries)
+                    List<TreeNode> EntryNameList = new List<TreeNode>();
+                    foreach (var sw in CGFX.DICTAndSectionData.Keys.Where(x => x == (CGFXFormat.CGFXEntryData)Enum.Parse(typeof(CGFXFormat.CGFXEntryData), SectionNameList[i])).ToList())
                     {
-                        if (sw == CGFXFormat.CGFXEntryData.Models)
+                        foreach (var r in CGFX.DICTAndSectionData[sw].DICT_Entries)
                         {
-                            var lt = ((CMDL)r.CGFXData.CGFXDataSection).meshDatas.Select(x => new TreeNode(((SOBJ)x.SOBJData.CGFXDataSection).Mesh.MeshName)).ToList();
-                            var mt = ((CMDL)r.CGFXData.CGFXDataSection).MTOB_DICT.DICT_Entries.Select(x => new TreeNode(((MTOB)x.CGFXData.CGFXDataSection).Name)).ToList();
-                            var nt = ((CMDL)r.CGFXData.CGFXDataSection).shapeDatas.Select((x, Id) => new { Id, x }).Select(x => new TreeNode(x.Id.ToString())).ToList();
+                            if (sw == CGFXFormat.CGFXEntryData.Models)
+                            {
+                                var lt = ((CMDL)r.CGFXData.CGFXDataSection).meshDatas.Select(x => new TreeNode(((SOBJ)x.SOBJData.CGFXDataSection).Mesh.MeshName)).ToList();
+                                var mt = ((CMDL)r.CGFXData.CGFXDataSection).MTOB_DICT.DICT_Entries.Select(x => new TreeNode(((MTOB)x.CGFXData.CGFXDataSection).Name)).ToList();
+                                var ShapeDatas = ((CMDL)r.CGFXData.CGFXDataSection).shapeDatas.Select((x, Id) => new { Id, x }).Select(x => new TreeNode(x.Id.ToString())).ToList();
 
-                            //var mtName = r.CGFXData.CMDLSection.UnknownDICT.DICT_Entries.Select(x => new TreeNode(x.CGFXData.NativeDataSections.CMDL_Native.MaterialName_Set.Name)).ToList();
-                            var mtName = ((CMDL)r.CGFXData.CGFXDataSection).UnknownDICT.DICT_Entries.Select(x => new TreeNode(x.Name)).ToList();
+                                var mtName = ((CMDL)r.CGFXData.CGFXDataSection).UnknownDICT.DICT_Entries.Select(x => new TreeNode(x.Name)).ToList();
 
-                            TreeNode treeNode = new TreeNode(r.Name);
-                            treeNode.Nodes.Add(new TreeNode("Mesh", lt.ToArray()));
+                                TreeNode treeNode = new TreeNode(r.Name);
+                                treeNode.Nodes.Add(new TreeNode("Mesh", lt.ToArray()));
 
-                            treeNode.Nodes.Add(new TreeNode("Material", mt.ToArray()));
+                                treeNode.Nodes.Add(new TreeNode("Material", mt.ToArray()));
 
-                            treeNode.Nodes.Add(new TreeNode("Shape", nt.ToArray()));
+                                treeNode.Nodes.Add(new TreeNode("Shape", ShapeDatas.ToArray()));
 
-                            treeNode.Nodes.Add(new TreeNode("LinkedMaterial", mtName.ToArray()));
+                                treeNode.Nodes.Add(new TreeNode("LinkedMaterial", mtName.ToArray()));
 
-                            EntryNameList.Add(treeNode);
-                        }
-                        //else if (sw == "Textures")
-                        //{
-                        //    var TextureSection = r.CGFXData.CGFXSectionData.TXOBSection.TextureSection.Name;
-                        //    //var MaterialSection = r.CGFXData.CGFXSectionData.TXOBSection.MaterialInfoSection.Name;
+                                EntryNameList.Add(treeNode);
+                            }
+                            //else if (sw == "Textures")
+                            //{
+                            //    var TextureSection = r.CGFXData.CGFXSectionData.TXOBSection.TextureSection.Name;
+                            //    //var MaterialSection = r.CGFXData.CGFXSectionData.TXOBSection.MaterialInfoSection.Name;
 
-                        //    TreeNode treeNode = new TreeNode(r.Name);
-                        //    treeNode.Nodes.Add(new TreeNode(TextureSection));
-                        //    //treeNode.Nodes.Add(new TreeNode(MaterialSection));
-                        //    EntryNameList.Add(treeNode);
+                            //    TreeNode treeNode = new TreeNode(r.Name);
+                            //    treeNode.Nodes.Add(new TreeNode(TextureSection));
+                            //    //treeNode.Nodes.Add(new TreeNode(MaterialSection));
+                            //    EntryNameList.Add(treeNode);
 
-                        //}
-                        else
-                        {
-                            TreeNode treeNode = new TreeNode(r.Name);
-                            EntryNameList.Add(treeNode);
+                            //}
+                            else
+                            {
+                                TreeNode treeNode = new TreeNode(r.Name);
+                                EntryNameList.Add(treeNode);
+                            }
                         }
                     }
+
+                    TreeNode SectionNameNode = new TreeNode(SectionNameList[i], EntryNameList.ToArray());
+                    SectionNodeList.Add(SectionNameNode);
                 }
 
-                TreeNode SectionNameNode = new TreeNode(SectionNameList[i], EntryNameList.ToArray());
-                SectionNodeList.Add(SectionNameNode);
+                TreeNode RootNode = new TreeNode("CGFX_Root", SectionNodeList.ToArray());
+                treeView1.Nodes.Add(RootNode);
+                treeView1.TopNode.Expand();
+                #endregion
             }
-
-            TreeNode RootNode = new TreeNode("CGFX_Root", SectionNodeList.ToArray());
-            treeView1.Nodes.Add(RootNode);
-            treeView1.TopNode.Expand();
-            #endregion
+            else return;
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
