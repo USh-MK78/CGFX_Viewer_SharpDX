@@ -21,9 +21,9 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.General.UserDataForm
             public byte[] Flag3 { get; set; } //0x4(Default Value : 02 00 00 00(?))
             public int STRING_ValueCount { get; set; }
 
-            public List<CGFXFormat.CGFXData.StringData.UserDataItem_String> UserDataStringList { get; set; }
+            public List<CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.StringData.UserDataItem_String> UserDataStringList { get; set; }
 
-            public StringData(CGFXFormat.CGFXData.StringData stringData)
+            public StringData(CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.StringData stringData)
             {
                 UDName = stringData.UDName;
                 //UserDataStringNameOffset = 0;
@@ -44,9 +44,9 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.General.UserDataForm
             public byte[] Flag2 { get; set; } //0x4(Default Value : 01 00 00 00(?))
             public int INT32_ValueCount { get; set; } //0x4
 
-            public List<CGFXFormat.CGFXData.Int32Data.UserDataItem_INT32> UserDataInt32List { get; set; }
+            public List<CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.Int32Data.UserDataItem_INT32> UserDataInt32List { get; set; }
 
-            public Int32Data(CGFXFormat.CGFXData.Int32Data int32Data)
+            public Int32Data(CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.Int32Data int32Data)
             {
                 UDName = int32Data.UDName;
                 //UserDataInt32NameOffset = 0;
@@ -60,46 +60,40 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.General.UserDataForm
         public RealNumber RealNumber_Data { get; set; }
         public class RealNumber
         {
-            public string UDName { get; set; }
-            public string UDName_Sub { get; set; }
+            public CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.RealNumber.UD_FloatType UD_FloatType { get; set; }
+            public string UD_FloatNumberName { get; set; }
+            public string UD_RealNumberName { get; set; }
 
             //Flag : 00 00 00 80
             public int REALNUMBERCount { get; set; } //0x4
 
             public int UnkData { get; set; }
 
-            public List<CGFXFormat.CGFXData.RealNumber.UserDataItem_REALNUMBER> UserDataRealNumberList { get; set; }
+            public List<CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.RealNumber.UserDataItem_REALNUMBER> UserDataRealNumberList { get; set; }
 
-            public RealNumber(CGFXFormat.CGFXData.RealNumber realNumber)
+            public RealNumber(CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.RealNumber realNumber)
             {
-                UDName = realNumber.UDName;
-                UDName_Sub = realNumber.UDName_Sub;
-                //RealNumberNameOffset = 0;
-                //SubNameStringOffset = 0; //Using Fog Animation, ColorData, Default = 0
+                UD_FloatType = realNumber.UD_Float_Type;
+                UD_FloatNumberName = realNumber.FloatNumberName;
+                UD_RealNumberName = realNumber.RealNumberName;
                 REALNUMBERCount = realNumber.REALNUMBERCount;
                 UserDataRealNumberList = realNumber.UserDataItem_RealNumber_List;
             }
-
-            //public enum RealNumberType
-            //{
-            //    Float,
-            //    Color
-            //}
         }
 
         public UserDataEntryPropertyGrid(CGFXFormat.CGFXData userDataEntry)
         {
-            if (userDataEntry.String_Data != null)
+            if (userDataEntry.CGFXDataSection.GetType().IsAssignableFrom(typeof(CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.StringData)))
             {
-                String_Data = new StringData(userDataEntry.String_Data);
+                String_Data = new StringData(userDataEntry.GetCGFXData<CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.StringData>());
             }
-            if (userDataEntry.Int32_Data != null)
+            if (userDataEntry.CGFXDataSection.GetType().IsAssignableFrom(typeof(CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.Int32Data)))
             {
-                Int32_Data = new Int32Data(userDataEntry.Int32_Data);
+                Int32_Data = new Int32Data(userDataEntry.GetCGFXData<CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.Int32Data>());
             }
-            if (userDataEntry.RealNumber_Data != null)
+            if (userDataEntry.CGFXDataSection.GetType().IsAssignableFrom(typeof(CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.RealNumber)))
             {
-                RealNumber_Data = new RealNumber(userDataEntry.RealNumber_Data);
+                RealNumber_Data = new RealNumber(userDataEntry.GetCGFXData<CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.RealNumber>());
             }
         }
     }

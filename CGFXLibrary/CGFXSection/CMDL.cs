@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static CGFXLibrary.CGFXFormat;
+using CGFXLibrary.SOBJ_Format;
 
 namespace CGFXLibrary.CGFXSection
 {
     /// <summary>
     /// Model
     /// </summary>
-    public class CMDL
+    public class CMDL : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
 
@@ -23,14 +24,14 @@ namespace CGFXLibrary.CGFXSection
         public int CMDL_UserDataDICTOffset { get; set; } //0x4
         public DICT CMDL_UserData { get; set; }
 
-        public bool IsBranchVisibleFlag1 { get; set; } //0x4
-        public bool IsBranchVisibleFlag2 { get; set; } //0x4
+        public bool IsBranchVisibleFlag1 { get; set; } //0x4 UnknownFlag (?)
+        public bool IsBranchVisibleFlag2 { get; set; } //0x4, IsBranchVisibleFlag (?)
 
         public CMDL_UnknownSection1 CMDLUnknownSection1 { get; set; }
         public class CMDL_UnknownSection1
         {
-            public byte[] Unknown_Byte5 { get; set; } //0x4
-            public byte[] Unknown_Byte6 { get; set; } //0x4
+            public byte[] Unknown_Byte5 { get; set; } //0x4, int NrChildren (?)
+            public byte[] Unknown_Byte6 { get; set; } //0x4, int Unknown
 
             public CMDL_UnknownSection1()
             {
@@ -78,7 +79,7 @@ namespace CGFXLibrary.CGFXSection
                     //Move DataOffset
                     br.BaseStream.Seek(MeshDataOffset, SeekOrigin.Current);
 
-                    SOBJData = new CGFXData(br.ReadBytes(4));
+                    SOBJData = new CGFXData(null, true);
                     SOBJData.Reader(br, BOM);
 
                     br.BaseStream.Position = Pos;
@@ -88,12 +89,12 @@ namespace CGFXLibrary.CGFXSection
             public MeshData()
             {
                 MeshDataOffset = 0;
-                SOBJData = new CGFXData(new byte[4]);
+                SOBJData = new CGFXData(null, true);
             }
 
             public override string ToString()
             {
-                return SOBJData.SOBJ_Mesh_Section.Meshes.Name;
+                return ((SOBJ)SOBJData.CGFXDataSection).Mesh.Name;
             }
         }
 
@@ -123,7 +124,7 @@ namespace CGFXLibrary.CGFXSection
                     //Move DataOffset
                     br.BaseStream.Seek(shapeDataOffset, SeekOrigin.Current);
 
-                    SOBJData = new CGFXData(br.ReadBytes(4));
+                    SOBJData = new CGFXData(null, true);
                     SOBJData.Reader(br, BOM);
 
                     br.BaseStream.Position = Pos;
@@ -133,7 +134,7 @@ namespace CGFXLibrary.CGFXSection
             public ShapeData()
             {
                 shapeDataOffset = 0;
-                SOBJData = new CGFXData(new byte[4]);
+                SOBJData = new CGFXData(null, true);
             }
 
             //public override string ToString()
@@ -142,17 +143,17 @@ namespace CGFXLibrary.CGFXSection
             //}
         }
 
-        public int NumOfUnknownDICTEntries { get; set; }
-        public int UnknownDICTOffset { get; set; }
-        public DICT UnknownDICT { get; set; }
+        public int NumOfUnknownDICTEntries { get; set; } //NumOfMeshNodeVisibilitiesEntries (?)
+        public int UnknownDICTOffset { get; set; } //MeshNodeVisibilitiesDICT Offset (?)
+        public DICT UnknownDICT { get; set; } //MeshNodeVisibilitiesDICT (?)
 
         public bool IsVisible { get; set; } //0x1
         public bool IsNonuniformScalable { get; set; } //0x1
         public byte[] UnknownData3 { get; set; } //0x2
 
-        public byte[] UnknownData2 { get; set; }
+        public byte[] UnknownData2 { get; set; } //0x4
         public int LayerID { get; set; }
-        //public byte[] UnknownData4 { get; set; }
+        public int SkeletonInfoSOBJOffset { get; set; }
 
         //public CMDL_SkeletonInfo CMDLSkeletonInfo { get; set; }
         //public class CMDL_SkeletonInfo
@@ -172,8 +173,6 @@ namespace CGFXLibrary.CGFXSection
         //{
         //    public byte[] Offset { get; set; } //0x4 (NumOfVertexInfoSOBJEntries_2)
         //}
-
-
 
         public void ReadCMDL(BinaryReader br, byte[] BOM)
         {
@@ -211,7 +210,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(CMDL_UserDataDICTOffset, SeekOrigin.Current);
 
-                CMDL_UserData.ReadDICT(br, BOM);
+                CMDL_UserData.ReadDICT(br, BOM, true);
 
                 br.BaseStream.Position = Pos;
             }
@@ -231,7 +230,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(CMDL_Offset_Animation_DICT, SeekOrigin.Current);
 
-                AnimationDICT.ReadDICT(br, BOM);
+                AnimationDICT.ReadDICT(br, BOM, true);
 
                 br.BaseStream.Position = Pos;
             }
@@ -275,7 +274,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(MTOB_DICTOffset, SeekOrigin.Current);
 
-                MTOB_DICT.ReadDICT(br, BOM);
+                MTOB_DICT.ReadDICT(br, BOM, true);
 
                 br.BaseStream.Position = Pos;
             }
@@ -315,7 +314,7 @@ namespace CGFXLibrary.CGFXSection
                 br.BaseStream.Seek(UnknownDICTOffset, SeekOrigin.Current);
 
                 //No IdentFlag, NameOffset(0x4), Unknown(0x4)
-                UnknownDICT.ReadDICT(br, BOM);
+                UnknownDICT.ReadDICT(br, BOM, false, new CGFXSection.DataComponent.NameSetData());
 
                 br.BaseStream.Position = Pos;
             }
@@ -326,13 +325,20 @@ namespace CGFXLibrary.CGFXSection
 
             UnknownData2 = endianConvert.Convert(br.ReadBytes(4));
             LayerID = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
-            //UnknownData4 = endianConvert.Convert(br.ReadBytes(4));
+            SkeletonInfoSOBJOffset = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
         }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadCMDL(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM) { }
 
         public CMDL()
         {
             CMDL_Header = "CMDL".ToCharArray();
-            CMDL_Revision = new List<byte>().ToArray();
+            CMDL_Revision = new byte[4];
             CMDL_ModelNameOffset = 0;
             CMDL_UserDataDICTCount = 0;
             CMDL_UserDataDICTOffset = 0;
@@ -362,10 +368,10 @@ namespace CGFXLibrary.CGFXSection
             UnknownDICT = new DICT();
             IsVisible = new bool();
             IsNonuniformScalable = new bool();
-            UnknownData3 = new List<byte>().ToArray();
-            UnknownData2 = new List<byte>().ToArray();
+            UnknownData3 = new byte[2];
+            UnknownData2 = new byte[4];
             LayerID = 0;
-            //UnknownData4 = new List<byte>().ToArray();
+            SkeletonInfoSOBJOffset = 0;
         }
     }
 }

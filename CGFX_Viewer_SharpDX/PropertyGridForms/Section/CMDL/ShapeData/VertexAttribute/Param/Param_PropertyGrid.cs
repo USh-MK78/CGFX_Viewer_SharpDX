@@ -6,14 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CGFXLibrary;
+using CGFXLibrary.SOBJ_Format.ShapeData;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAttribute.Param
 {
     [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomSortTypeConverter))]
     public class Param_PropertyGrid
     {
-        //public int FormatType { get; set; }
-        //public int ComponentCount { get; set; } //For example XYZ = 3, ST = 2, RGBA = 4
         public CGFXLibrary.VertexAttribute.Usage VertexAttributeUsageFlag { get; set; }
         public CGFXLibrary.VertexAttribute.Flag VertexAttributeFlag { get; set; }
 
@@ -46,7 +45,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
                 RGBA = 4
             }
 
-            public Component(SOBJ.Shape.VertexAttribute.Param.Component component)
+            public Component(Shape.VertexAttribute.Param.Component component)
             {
                 Flags = component.Flags;
                 ComponentCount = component.ComponentCount;
@@ -64,10 +63,8 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
         public int AttributeListOffset { get; set; }
         public List<float> AttributeList { get; set; }
 
-        public Param_PropertyGrid(SOBJ.Shape.VertexAttribute.Param param)
+        public Param_PropertyGrid(Shape.VertexAttribute.Param param)
         {
-            //FormatType = param.FormatType;
-            //ComponentCount = param.ComponentCount;
             VertexAttributeUsageFlag = param.VertexAttributeUsageFlag;
             VertexAttributeFlag = param.VertexAttributeFlag;
             Components = new Component(param.Components);
@@ -80,8 +77,6 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
 
         public Param_PropertyGrid()
         {
-            //FormatType = 0;
-            //ComponentCount = 0;
             VertexAttributeUsageFlag = new CGFXLibrary.VertexAttribute.Usage(-1);
             VertexAttributeFlag = new CGFXLibrary.VertexAttribute.Flag(-1);
             Components = new Component();

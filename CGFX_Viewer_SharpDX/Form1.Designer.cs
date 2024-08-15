@@ -34,6 +34,10 @@ namespace CGFX_Viewer_SharpDX
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cANMEditorCurveEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -72,6 +76,7 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage16 = new System.Windows.Forms.TabPage();
             this.tabPage17 = new System.Windows.Forms.TabPage();
             this.propertyGrid9 = new System.Windows.Forms.PropertyGrid();
+            this.propertyGrid10 = new System.Windows.Forms.PropertyGrid();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -97,6 +102,7 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage8.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabPage10.SuspendLayout();
+            this.tabPage11.SuspendLayout();
             this.tabPage12.SuspendLayout();
             this.tabPage17.SuspendLayout();
             this.SuspendLayout();
@@ -104,7 +110,9 @@ namespace CGFX_Viewer_SharpDX
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.toolToolStripMenuItem,
+            this.editorToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(887, 24);
@@ -140,6 +148,34 @@ namespace CGFX_Viewer_SharpDX
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // toolToolStripMenuItem
+            // 
+            this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
+            this.toolToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.toolToolStripMenuItem.Text = "Tool";
+            // 
+            // editorToolStripMenuItem
+            // 
+            this.editorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cANMEditorCurveEditorToolStripMenuItem,
+            this.testToolStripMenuItem});
+            this.editorToolStripMenuItem.Name = "editorToolStripMenuItem";
+            this.editorToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
+            this.editorToolStripMenuItem.Text = "Editor";
+            // 
+            // cANMEditorCurveEditorToolStripMenuItem
+            // 
+            this.cANMEditorCurveEditorToolStripMenuItem.Name = "cANMEditorCurveEditorToolStripMenuItem";
+            this.cANMEditorCurveEditorToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.cANMEditorCurveEditorToolStripMenuItem.Text = "CANM Editor (Curve Editor)";
+            this.cANMEditorCurveEditorToolStripMenuItem.Click += new System.EventHandler(this.cANMEditorCurveEditorToolStripMenuItem_Click);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.testToolStripMenuItem.Text = "Test";
             // 
             // splitContainer1
             // 
@@ -453,6 +489,7 @@ namespace CGFX_Viewer_SharpDX
             // 
             // tabPage11
             // 
+            this.tabPage11.Controls.Add(this.propertyGrid10);
             this.tabPage11.Location = new System.Drawing.Point(4, 22);
             this.tabPage11.Name = "tabPage11";
             this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
@@ -537,6 +574,14 @@ namespace CGFX_Viewer_SharpDX
             this.propertyGrid9.Size = new System.Drawing.Size(202, 459);
             this.propertyGrid9.TabIndex = 0;
             // 
+            // propertyGrid10
+            // 
+            this.propertyGrid10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid10.Location = new System.Drawing.Point(3, 3);
+            this.propertyGrid10.Name = "propertyGrid10";
+            this.propertyGrid10.Size = new System.Drawing.Size(196, 453);
+            this.propertyGrid10.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -576,6 +621,7 @@ namespace CGFX_Viewer_SharpDX
             this.tabPage8.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
             this.tabPage10.ResumeLayout(false);
+            this.tabPage11.ResumeLayout(false);
             this.tabPage12.ResumeLayout(false);
             this.tabPage17.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -628,6 +674,11 @@ namespace CGFX_Viewer_SharpDX
         private System.Windows.Forms.PropertyGrid propertyGrid7;
         private System.Windows.Forms.PropertyGrid propertyGrid8;
         private System.Windows.Forms.PropertyGrid propertyGrid9;
+        private System.Windows.Forms.ToolStripMenuItem toolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cANMEditorCurveEditorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.PropertyGrid propertyGrid10;
     }
 }
 

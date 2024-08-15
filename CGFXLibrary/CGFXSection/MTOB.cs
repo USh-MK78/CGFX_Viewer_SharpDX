@@ -12,7 +12,7 @@ namespace CGFXLibrary.CGFXSection
     /// <summary>
     /// Material (0x00000008)
     /// </summary>
-    public class MTOB
+    public class MTOB : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
 
@@ -1355,7 +1355,7 @@ namespace CGFXLibrary.CGFXSection
                         br.BaseStream.Seek(TXOB_MaterialInfoOffset, SeekOrigin.Current);
 
                         //ReadMaterialInfo
-                        TXOBMaterialDataSection = new CGFXData(br.ReadBytes(4));
+                        TXOBMaterialDataSection = new CGFXData(null, true);
                         TXOBMaterialDataSection.Reader(br, BOM);
 
                         br.BaseStream.Position = Pos;
@@ -1403,7 +1403,9 @@ namespace CGFXLibrary.CGFXSection
                 Flags = new Flags(new byte[] { 0x00, 0x00, 0x00, 0x80 });
                 UnknownData = 0;
                 TXOB_MaterialInfoOffset = 0;
-                TXOBMaterialDataSection = new CGFXData(new byte[] { 0x02, 0x00, 0x00, 0x40 });
+                TXOBMaterialDataSection = new CGFXData(null, true);
+                //TXOBMaterialDataSection.Flags = new Flags(new byte[] { 0x02, 0x00, 0x00, 0x40 });
+
                 UnknownDataOffset0 = 0;
                 UnknownDataSection_1 = new UnknownDataSection1();
 
@@ -1704,6 +1706,16 @@ namespace CGFXLibrary.CGFXSection
             q.M43 = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
             q.M44 = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
             UnknownMatrix = q;
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadMTOB(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM)
+        {
+            throw new NotImplementedException();
         }
 
         public MTOB()

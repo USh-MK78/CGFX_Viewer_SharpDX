@@ -36,7 +36,11 @@ namespace CGFX_Viewer_SharpDX.Component.Material
         private ShaderResourceViewProxy[] textureResources = new ShaderResourceViewProxy[6];
         private ShaderResourceViewProxy[] AlphaMapResources = new ShaderResourceViewProxy[6];
 
-        private SamplerStateProxy surfaceSampler;
+        private SamplerStateProxy DiffuseSampler0;
+        private SamplerStateProxy DiffuseSampler1;
+        private SamplerStateProxy DiffuseSampler2;
+        private SamplerStateProxy DiffuseSampler3;
+
         private SamplerStateProxy displacementSampler;
         private SamplerStateProxy shadowSampler;
 
@@ -64,7 +68,12 @@ namespace CGFX_Viewer_SharpDX.Component.Material
         ////private int texEmissiveSlot;
         //private int texSSAOSlot;
         //private int texEnvironmentSlot;
-        private int samplerDiffuseSlot;
+
+        private int samplerDiffuseSlot0;
+        private int samplerDiffuseSlot1;
+        private int samplerDiffuseSlot2;
+        private int samplerDiffuseSlot3;
+
         private int samplerDisplaceSlot;
         private int samplerShadowSlot;
         private uint textureIndex;
@@ -149,7 +158,12 @@ namespace CGFX_Viewer_SharpDX.Component.Material
             material = materialCore;
             //texDiffuseSlot = (texAlphaSlot = (texDisplaceSlot = (texNormalSlot = -1)));
             texSlot0 = (texDisplaceSlot = (texSlot1 = -1));
-            samplerDiffuseSlot = (samplerDisplaceSlot = (samplerShadowSlot = -1));
+            samplerDiffuseSlot0 = (samplerDisplaceSlot = (samplerShadowSlot = -1));
+
+            samplerDiffuseSlot1 = (samplerDisplaceSlot = (samplerShadowSlot = -1));
+            samplerDiffuseSlot2 = (samplerDisplaceSlot = (samplerShadowSlot = -1));
+            samplerDiffuseSlot3 = (samplerDisplaceSlot = (samplerShadowSlot = -1));
+            //this.samplerDiffuseSlot1 = DiffuseSampler0
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
             MaterialPass = technique[defaultPassName]; //<-Break
@@ -570,13 +584,42 @@ namespace CGFX_Viewer_SharpDX.Component.Material
 
 
 
-
-            AddPropertyBinding("DiffuseMapSampler", delegate
+            AddPropertyBinding("DiffuseMapSamplerList", delegate
             {
-                SamplerStateProxy samplerStateProxy2 = statePoolManager.Register(material.DiffuseMapSampler);
-                DisposeObject.RemoveAndDispose(ref surfaceSampler);
-                surfaceSampler = samplerStateProxy2;
+                SamplerStateProxy DiffusesamplerStateProxy0 = statePoolManager.Register(material.DiffuseMapSamplerList[0]);
+                DisposeObject.RemoveAndDispose(ref DiffuseSampler0);
+                DiffuseSampler0 = DiffusesamplerStateProxy0;
+
+                SamplerStateProxy DiffusesamplerStateProxy1 = statePoolManager.Register(material.DiffuseMapSamplerList[1]);
+                DisposeObject.RemoveAndDispose(ref DiffuseSampler1);
+                DiffuseSampler1 = DiffusesamplerStateProxy1;
+
+                SamplerStateProxy DiffusesamplerStateProxy2 = statePoolManager.Register(material.DiffuseMapSamplerList[2]);
+                DisposeObject.RemoveAndDispose(ref DiffuseSampler2);
+                DiffuseSampler2 = DiffusesamplerStateProxy2;
+
+                SamplerStateProxy DiffusesamplerStateProxy3 = statePoolManager.Register(material.DiffuseMapSamplerList[3]);
+                DisposeObject.RemoveAndDispose(ref DiffuseSampler3);
+                DiffuseSampler3 = DiffusesamplerStateProxy3;
             });
+
+            //AddPropertyBinding("DiffuseMapSampler1", delegate
+            //{
+
+            //});
+
+            //AddPropertyBinding("DiffuseMapSampler2", delegate
+            //{
+
+            //});
+
+            //AddPropertyBinding("DiffuseMapSampler3", delegate
+            //{
+
+            //});
+
+
+
             AddPropertyBinding("DisplacementMapSampler", delegate
             {
                 SamplerStateProxy samplerStateProxy = statePoolManager.Register(material.DisplacementMapSampler);
@@ -700,7 +743,11 @@ namespace CGFX_Viewer_SharpDX.Component.Material
 
                 //shader.BindTexture(deviceContext, texAlphaSlot, textureResources[1]);
                 //shader.BindTexture(deviceContext, texEmissiveSlot, textureResources[5]);
-                shader.BindSampler(deviceContext, samplerDiffuseSlot, surfaceSampler);
+
+                shader.BindSampler(deviceContext, samplerDiffuseSlot0, DiffuseSampler0);
+                shader.BindSampler(deviceContext, samplerDiffuseSlot1, DiffuseSampler1);
+                shader.BindSampler(deviceContext, samplerDiffuseSlot2, DiffuseSampler2);
+                shader.BindSampler(deviceContext, samplerDiffuseSlot3, DiffuseSampler3);
             }
         }
 
@@ -725,7 +772,15 @@ namespace CGFX_Viewer_SharpDX.Component.Material
             texShadowSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot("texShadowMap");
             texSSAOSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot("texSSAOMap");
             texEnvironmentSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot("texCubeMap");
-            samplerDiffuseSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot("samplerSurface");
+
+
+            samplerDiffuseSlot0 = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot("samplerSurface0");
+            samplerDiffuseSlot1 = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot("samplerSurface1");
+            samplerDiffuseSlot2 = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot("samplerSurface2");
+            samplerDiffuseSlot3 = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot("samplerSurface3");
+
+
+
             samplerShadowSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot("samplerShadow");
             if (!shaderPass.DomainShader.IsNULL && material.EnableTessellation)
             {
@@ -776,7 +831,11 @@ namespace CGFX_Viewer_SharpDX.Component.Material
                 DisposeObject.RemoveAndDispose(ref AlphaMapResources[i]);
             }
 
-            DisposeObject.RemoveAndDispose(ref surfaceSampler);
+            DisposeObject.RemoveAndDispose(ref DiffuseSampler0);
+            DisposeObject.RemoveAndDispose(ref DiffuseSampler1);
+            DisposeObject.RemoveAndDispose(ref DiffuseSampler2);
+            DisposeObject.RemoveAndDispose(ref DiffuseSampler3);
+
             DisposeObject.RemoveAndDispose(ref displacementSampler);
             DisposeObject.RemoveAndDispose(ref shadowSampler);
             base.OnDispose(disposeManagedResources);

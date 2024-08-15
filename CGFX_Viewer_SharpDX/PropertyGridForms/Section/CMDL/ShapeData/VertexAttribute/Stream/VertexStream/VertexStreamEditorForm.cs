@@ -8,14 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CGFXLibrary;
+using CGFXLibrary.SOBJ_Format.ShapeData;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAttribute.Stream.VertexStream
 {
     public partial class VertexStreamEditorForm : Form
     {
-        public List<SOBJ.Shape.VertexAttribute.Stream.VertexStream> vertexStream_list { get; set; }
+        public List<Shape.VertexAttribute.Stream.VertexStream> vertexStream_list { get; set; }
 
-        public VertexStreamEditorForm(List<SOBJ.Shape.VertexAttribute.Stream.VertexStream> vertexStreams)
+        public VertexStreamEditorForm(List<Shape.VertexAttribute.Stream.VertexStream> vertexStreams)
         {
             InitializeComponent();
             vertexStream_list = vertexStreams;

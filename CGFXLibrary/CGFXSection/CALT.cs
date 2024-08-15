@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace CGFXLibrary.CGFXSection
 {
     /// <summary>
-    /// Ambient Light
+    /// Ambient Light (Flag : 0x22040040)
     /// </summary>
-    public class CALT
+    public class CALT : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
         public char[] CALT_Header { get; set; }
@@ -147,7 +147,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move Offset
                 br.BaseStream.Seek(UserDataDICTOffset, SeekOrigin.Current);
 
-                UserDataDICT.ReadDICT(br, BOM);
+                UserDataDICT.ReadDICT(br, BOM, true);
 
                 br.BaseStream.Position = Pos;
             }
@@ -169,7 +169,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move Offset
                 br.BaseStream.Seek(UnknownDICTOffset, SeekOrigin.Current);
 
-                UnknownDICT.ReadDICT(br, BOM);
+                UnknownDICT.ReadDICT(br, BOM, false);
 
                 br.BaseStream.Position = Pos;
             }
@@ -193,6 +193,16 @@ namespace CGFXLibrary.CGFXSection
             AmbientColorBitData.ReadColorBit(br);
 
             UnknownData6 = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadCALT(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM)
+        {
+            throw new NotImplementedException();
         }
 
         public CALT()

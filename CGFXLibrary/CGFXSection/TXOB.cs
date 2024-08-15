@@ -20,7 +20,7 @@ namespace CGFXLibrary.CGFXSection
         }
 
         public Texture TextureSection { get; set; } //0x11000020
-        public class Texture
+        public class Texture : IO.BinaryIOInterface.BinaryIO
         {
             public string Name;
             public char[] TXOB_Header { get; set; }
@@ -190,10 +190,24 @@ namespace CGFXLibrary.CGFXSection
                 UnknownByte9 = endianConvert.Convert(br.ReadBytes(4));
                 UnknownByte10 = endianConvert.Convert(br.ReadBytes(4));
             }
+
+            public override void Read(BinaryReader br, byte[] BOM)
+            {
+                ReadTXOB(br, BOM);
+            }
+
+            public override void Write(BinaryWriter bw, byte[] BOM = null)
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public MaterialInfo MaterialInfoSection { get; set; } //0x02000040
-        public class MaterialInfo
+        public MaterialInfo MaterialInfoSection { get; set; }
+
+        /// <summary>
+        /// TXOB (MaterialInfo) : Flag => 0x02000040
+        /// </summary>
+        public class MaterialInfo : IO.BinaryIOInterface.BinaryIO
         {
             public string Name;
             public char[] TXOB_Header { get; set; }
@@ -303,6 +317,16 @@ namespace CGFXLibrary.CGFXSection
                 //float
                 //int
 
+            }
+
+            public override void Read(BinaryReader br, byte[] BOM)
+            {
+                ReadTXOB(br, BOM);
+            }
+
+            public override void Write(BinaryWriter bw, byte[] BOM = null)
+            {
+                throw new NotImplementedException();
             }
 
             public MaterialInfo()

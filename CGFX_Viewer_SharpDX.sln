@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CGFXShader_HLSL", "CGFXShad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LockBitImageTools", "LockBitImageTools\LockBitImageTools.csproj", "{D689B11B-79DA-401B-AA6B-F2BF4F785CF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlLibrary", "ControlLibrary\ControlLibrary.csproj", "{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,18 @@ Global
 		{D689B11B-79DA-401B-AA6B-F2BF4F785CF0}.Release|x64.Build.0 = Release|Any CPU
 		{D689B11B-79DA-401B-AA6B-F2BF4F785CF0}.Release|x86.ActiveCfg = Release|Any CPU
 		{D689B11B-79DA-401B-AA6B-F2BF4F785CF0}.Release|x86.Build.0 = Release|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Debug|x64.Build.0 = Debug|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Debug|x86.Build.0 = Debug|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Release|x64.ActiveCfg = Release|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Release|x64.Build.0 = Release|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Release|x86.ActiveCfg = Release|Any CPU
+		{57D4BD3A-F85C-4DA6-82C7-EDCDB41A9815}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

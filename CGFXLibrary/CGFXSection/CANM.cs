@@ -7,24 +7,34 @@ using System.Threading.Tasks;
 
 namespace CGFXLibrary.CGFXSection
 {
-    public class CANM
+    /// <summary>
+    /// Animation (CANM) => 0x00000000 (IdentFlag : None)
+    /// 
+    /// Skeleton Animations
+    /// Texture Animations
+    /// Visibility Animations
+    /// Camera Animations
+    /// Light Animations
+    /// </summary>
+    public class CANM : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
-        public string CANM_AttributeName;
+        public string CANM_TangentAttributeName;
 
         public char[] CANM_Header { get; set; }
         public byte[] Revision { get; set; }
         public int NameOffset { get; set; }
         public int CANM_AttributeNameOffset { get; set; }
+        public int LoopMode { get; set; }
+        public float AnimFrameCount { get; set; }
 
-        public int UnknownData0 { get; set; }
-        public float UnknownData1 { get; set; }
-        public int UnknownData2 { get; set; }
+        public int MemberAnimationDICTCount { get; set; }
+        public int MemberAnimationDICTOffset { get; set; }
+        public DICT MemberAnimationDICT { get; set; }
 
-        public int UnknownDICTOffset { get; set; }
-        public DICT UnknownDICTData { get; set; }
-
-        public byte[] UnknownByteData { get; set; } //0x8
+        public int NumOfUserDataDICTCount { get; set; }
+        public int UserDataDICTOffset { get; set; }
+        public DICT UserDataDICT { get; set; }
 
         public void ReadCANM(BinaryReader br, byte[] BOM)
         {
@@ -64,32 +74,55 @@ namespace CGFXLibrary.CGFXSection
                 ReadByteLine readByteLine = new ReadByteLine(new List<byte>());
                 readByteLine.ReadByte(br, 0x00);
 
-                CANM_AttributeName = new string(readByteLine.ConvertToCharArray());
+                CANM_TangentAttributeName = new string(readByteLine.ConvertToCharArray());
 
                 br.BaseStream.Position = Pos;
             }
 
-            UnknownData0 = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
-            UnknownData1 = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
-            UnknownData2 = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
+            LoopMode = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
+            AnimFrameCount = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
 
-            UnknownDICTOffset = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
-            if (UnknownDICTOffset != 0)
+            MemberAnimationDICTCount = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
+            MemberAnimationDICTOffset = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
+            if (MemberAnimationDICTOffset != 0)
             {
                 long Pos = br.BaseStream.Position;
 
                 br.BaseStream.Seek(-4, SeekOrigin.Current);
 
                 //Move DICTOffset
-                br.BaseStream.Seek(UnknownDICTOffset, SeekOrigin.Current);
+                br.BaseStream.Seek(MemberAnimationDICTOffset, SeekOrigin.Current);
 
-                //0x00000000, 
-                UnknownDICTData.ReadDICT(br, BOM);
+                MemberAnimationDICT.ReadDICT(br, BOM, false, new CGFXSection.DataComponent.AnimationData());
 
                 br.BaseStream.Position = Pos;
             }
 
-            UnknownByteData = endianConvert.Convert(br.ReadBytes(8)); //???
+            NumOfUserDataDICTCount = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
+            UserDataDICTOffset = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
+            if (UserDataDICTOffset != 0)
+            {
+                long Pos = br.BaseStream.Position;
+
+                br.BaseStream.Seek(-4, SeekOrigin.Current);
+
+                //Move DICTOffset
+                br.BaseStream.Seek(UserDataDICTOffset, SeekOrigin.Current);
+
+                UserDataDICT.ReadDICT(br, BOM, true);
+
+                br.BaseStream.Position = Pos;
+            }
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadCANM(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM)
+        {
+            throw new NotImplementedException();
         }
 
         public CANM()
@@ -99,14 +132,16 @@ namespace CGFXLibrary.CGFXSection
             NameOffset = 0;
             CANM_AttributeNameOffset = 0;
 
-            UnknownData0 = 0;
-            UnknownData1 = 0f;
-            UnknownData2 = 0;
+            LoopMode = 0;
+            AnimFrameCount = 0f;
 
-            UnknownDICTOffset = 0;
-            UnknownDICTData = new DICT();
+            MemberAnimationDICTCount = 0;
+            MemberAnimationDICTOffset = 0;
+            MemberAnimationDICT = new DICT();
 
-            UnknownByteData = new byte[8];
+            NumOfUserDataDICTCount = 0;
+            UserDataDICTOffset = 0;
+            UserDataDICT = new DICT();
         }
     }
 }

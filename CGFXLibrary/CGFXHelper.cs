@@ -240,10 +240,40 @@ namespace CGFXLibrary
         }
     }
 
-
-
     public class Flags
 	{
+
+        // [CGFX IndentFlag (反転前)]
+        //
+        //      Models (CMDL) (Primitive) => Flag : 92 00 00 40
+        //    Models (CMDL) (HasSkeletal) => Flag : 12 00 00 40
+        //       Textures (TXOB, Texture) => Flag : 11 00 00 20
+        //      Textures (TXOB, Material) => Flag : 02 00 00 40
+        //             LookupTable (LUTS) => Flag : 00 00 00 04
+        //               Materials (MTOB) => Flag : 00 00 00 08
+        //                 Shaders (SHDR) => Flag : 01 00 00 80
+        //                 Cameras (CCAM) => Flag : 0A 00 00 40
+        //                  Lights (CVLT) => Flag : 22 02 00 40
+        //                  Lights (CHLT) => Flag : 22 01 00 40
+        //                  Lights (CALT) => Flag : 22 04 00 40
+        //                  Lights (CFLT) => Flag : A2 00 00 40
+        //                    Fogs (CFOG) => Flag : 42 00 00 40
+        //            Environments (CENV) => Flag : 00 00 80 00
+        //              Animations (CANM) => Flag : 00 00 00 00 (IdentFlag : None) [Skeleton. Texture, Visibility, Camera, Light Animations]
+        //                Particle (CNOD) => Flag : 01 00 00 40
+        //                 Emitter (PEMT) => Flag : 06 00 00 40
+        //                     StringData => Flag : 00 00 00 10
+        //                      Int32Data => Flag : 00 00 00 20
+        //                     RealNumber => Flag : 00 00 00 80
+        //                    SOBJ (Mesh) => Flag : 00 00 00 01
+        //                   SOBJ (Shape) => Flag : 01 00 00 10
+
+        //                     Animation0 => Flag : 08 00 00 00
+        //                     Animation1 => Flag : 20 00 00 00
+        //                     Animation2 => Flag : 28 00 00 00
+        //                     Animation3 => Flag : 30 00 00 00
+        //                     Animation4 => Flag : 38 00 00 00
+
         public enum CGFXIdentFlag : uint
         {
             NONE = 0b_0000_0000_0000_0000_0000_0000_0000_0000,
@@ -281,13 +311,299 @@ namespace CGFXLibrary
             F31 = 0b_0100_0000_0000_0000_0000_0000_0000_0000, //Model
             F32 = 0b_1000_0000_0000_0000_0000_0000_0000_0000, //Shader (IdentFlag & 0x0FFFFFFF = 0 => UserData (RealNumber[float, Color]))
 
+            CMDL = F31 | F8 | F5 | F2,
+            CCAM = F31 | F4 | F2,
+            CFOG = F31 | F7 | F2,
+
+            TXOB_v0 = F30 | F3,
+            TXOB_v1 = F30 | F5 | F1,
+
+            Animation0 = F6, //20 00 00 00 => 00 00 00 20
+            Animation1 = F6 | F4, //28 00 00 00 => 00 00 00 28 
+            Animation2 = F6 | F5 | F4,
+
             F32_F1 = F32 | F1,
-            CTEX_v0 = F30 | F3,
-            CTEX_v1 = F30 | F5 | F1
         }
 
-        public byte[] IdentFlag { get; set; } //0x4
+        public byte[] IdentFlag { get; set; } //0x4, Ex : [CFOG] 42 00 00 40 => 40 00 00 42
 
+        #region New ways to determine IdentFlag (?)
+        public byte[] RevIdentFlag => IdentFlag.Reverse().ToArray();
+        public byte BitData0
+        {
+            get
+            {
+                return RevIdentFlag[0];
+            }
+            set
+            {
+                RevIdentFlag[0] = value;
+            }
+        }
+
+        public byte BitData1
+        {
+            get
+            {
+                return RevIdentFlag[1];
+            }
+            set
+            {
+                RevIdentFlag[1] = value;
+            }
+        }
+
+        public byte BitData2
+        {
+            get
+            {
+                return RevIdentFlag[2];
+            }
+            set
+            {
+                RevIdentFlag[2] = value;
+            }
+        }
+
+        public byte BitData3
+        {
+            get
+            {
+                return RevIdentFlag[3];
+            }
+            set
+            {
+                RevIdentFlag[3] = value;
+            }
+        }
+
+        #region Bit0
+        //[Value]
+        //IdentFlag[4] : 0 => IsPrimitive, 1 => IsSceneEnvironment, 2 => IsLight, 3 => HasSkeletalModel, 4 => IsCamera, 5 => IsEmitter, 6 => IsScene, 7 => IsShader
+        //
+        //0, 3
+        //IdentFlag[4] : 0 => HasSkeletalModel, 1 => IsSceneEnvironment, 2 => IsLight, 3 => IsPrimitive, 4 => IsCamera, 5 => IsEmitter, 6 => IsScene, 7 => IsShader
+
+        public bool IsPrimitive
+        {
+            get
+            {
+                return (BitData0 & 1) == 1 ? true : false;
+            }
+            //set
+            //{
+            //    if (value == true) BitData0 = (byte)(BitData0 | 1);
+            //    else if (value == false) BitData0 = (byte)(BitData0 ^ 1);
+            //}
+        }
+
+        public bool IsSceneEnvironment
+        {
+            get
+            {
+                return ((BitData0 & 2) >> 1) == 1 ? true : false;
+            }
+            //set
+            //{
+            //    if (value == true) BitData0 = (byte)(BitData0 | 2);
+            //    else if (value == false) BitData0 = (byte)(BitData0 ^ 2);
+            //}
+        }
+
+        public bool IsLight
+        {
+            get
+            {
+                return ((BitData0 & 4) >> 2) == 1 ? true : false;
+            }
+            //set
+            //{
+            //    if (value == true) BitData0 = (byte)(BitData0 | 4);
+            //    else if (value == false) BitData0 = (byte)(BitData0 ^ 4);
+            //}
+        }
+
+        public bool HasSkeletalModel
+        {
+            get
+            {
+                return ((BitData0 & 8) >> 3) == 1 ? true : false;
+            }
+            //set
+            //{
+            //    if (value == true) BitData0 = (byte)(BitData0 | 8);
+            //    else if (value == false) BitData0 = (byte)(BitData0 ^ 8);
+            //}
+        }
+
+        public bool IsCamera
+        {
+            get
+            {
+                return ((BitData0 & 10) >> 4) == 1 ? true : false;
+            }
+            //set
+            //{
+            //    if (value == true) BitData0 = (byte)(BitData0 | 10);
+            //    else if (value == false) BitData0 = (byte)(BitData0 ^ 10);
+            //}
+        }
+
+        public bool IsEmitter
+        {
+            get
+            {
+                return ((BitData0 & 20) >> 5) == 1 ? true : false;
+            }
+            //set
+            //{
+            //    if (value == true) BitData0 = (byte)(BitData0 | 20);
+            //    else if (value == false) BitData0 = (byte)(BitData0 ^ 20);
+            //}
+        }
+
+        public bool IsScene
+        {
+            get
+            {
+                return ((BitData0 & 40) >> 6) == 1 ? true : false;
+            }
+            //set
+            //{
+            //    if (value == true) BitData0 = (byte)(BitData0 | 40);
+            //    else if (value == false) BitData0 = (byte)(BitData0 ^ 40);
+            //}
+        }
+
+        public bool IsShader
+        {
+            get
+            {
+                return ((BitData0 & 80) >> 7) == 1 ? true : false;
+            }
+            //set
+            //{
+            //    if (value == true) BitData0 = (byte)(BitData0 | 80);
+            //    else if (value == false) BitData0 = (byte)(BitData0 ^ 80);
+            //}
+        }
+        #endregion
+
+        #region Bit1
+
+        #endregion
+
+        #region Bit2
+
+        #endregion
+
+        #region Bit3
+        public bool IsType0
+        {
+            get
+            {
+                return (BitData3 & 1) == 1 ? true : false;
+            }
+            set
+            {
+                if (value == true) BitData3 = (byte)(BitData3 | 1);
+                else if (value == false) BitData3 = (byte)(BitData3 ^ 1);
+            }
+        }
+
+        public bool IsType1
+        {
+            get
+            {
+                return (BitData3 & 2) == 2 ? true : false;
+            }
+            set
+            {
+                if (value == true) BitData3 = (byte)(BitData3 | 2);
+                else if (value == false) BitData3 = (byte)(BitData3 ^ 2);
+            }
+        }
+
+        public bool IsType2
+        {
+            get
+            {
+                return (BitData3 & 4) == 4 ? true : false;
+            }
+            set
+            {
+                if (value == true) BitData3 = (byte)(BitData3 | 4);
+                else if (value == false) BitData3 = (byte)(BitData3 ^ 4);
+            }
+        }
+
+        public bool IsType3
+        {
+            get
+            {
+                return (BitData3 & 8) == 8 ? true : false;
+            }
+            set
+            {
+                if (value == true) BitData3 = (byte)(BitData3 | 8);
+                else if (value == false) BitData3 = (byte)(BitData3 ^ 8);
+            }
+        }
+
+        public bool IsType4
+        {
+            get
+            {
+                return (BitData3 & 10) == 10 ? true : false;
+            }
+            set
+            {
+                if (value == true) BitData3 = (byte)(BitData3 | 10);
+                else if (value == false) BitData3 = (byte)(BitData3 ^ 10);
+            }
+        }
+
+        public bool IsType5
+        {
+            get
+            {
+                return (BitData3 & 20) == 20 ? true : false;
+            }
+            set
+            {
+                if (value == true) BitData3 = (byte)(BitData3 | 20);
+                else if (value == false) BitData3 = (byte)(BitData3 ^ 20);
+            }
+        }
+
+        public bool IsType6
+        {
+            get
+            {
+                return (BitData3 & 40) == 40 ? true : false;
+            }
+            set
+            {
+                if (value == true) BitData3 = (byte)(BitData3 | 40);
+                else if (value == false) BitData3 = (byte)(BitData3 ^ 40);
+            }
+        }
+
+        public bool IsType7
+        {
+            get
+            {
+                return (BitData3 & 80) == 80 ? true : false;
+            }
+            set
+            {
+                if (value == true) BitData3 = (byte)(BitData3 | 80);
+                else if (value == false) BitData3 = (byte)(BitData3 ^ 80);
+            }
+        }
+        #endregion
+
+        #endregion
 
         public uint GetIdentFlagUInt()
         {
@@ -350,7 +666,6 @@ namespace CGFXLibrary
             return "IdentFlags";
         }
     }
-
 
     public class VertexAttribute
     {
@@ -651,7 +966,6 @@ namespace CGFXLibrary
         }
     }
 
-
     public class CGFXVector
 	{
 
@@ -927,19 +1241,6 @@ namespace CGFXLibrary
             Color = 4,
         }
 
-        //public T Scaled<T>(DataType dataType)
-        //{
-        //    object obj = new object();
-
-        //    if (dataType == DataType.Vt) obj = new Vector3(Vertex.X * Scale_Factor.VtScale, Vertex.Y * Scale_Factor.VtScale, Vertex.Z * Scale_Factor.VtScale);
-        //    if (dataType == DataType.Nr) obj = new Vector3(Normal.X * Scale_Factor.NrScale, Normal.Y * Scale_Factor.NrScale, Normal.Z * Scale_Factor.NrScale);
-        //    if (dataType == DataType.Tr) obj = (Vector3)Tangent; //No ScaleFactor
-        //    if (dataType == DataType.TexCoord0) obj = new Vector2(TexCoord0.X * Scale_Factor.TexCoord0Scale, TexCoord0.Y * Scale_Factor.TexCoord0Scale);
-        //    if (dataType == DataType.TexCoord1) obj = new Vector2(TexCoord1.X * Scale_Factor.TexCoord1Scale, TexCoord1.Y * Scale_Factor.TexCoord1Scale);
-        //    if (dataType == DataType.TexCoord2) obj = new Vector2(TexCoord2.X * Scale_Factor.TexCoord2Scale, TexCoord2.Y * Scale_Factor.TexCoord2Scale);
-        //    return (T)obj;
-        //}
-
         public Polygon(Vector3 Vt, Vector3 Nr, Vector3 Tr, Vector2 TexCoord_0, Vector2 TexCoord_1, Vector2 TexCoord_2, Color color, ScaleFactor scaleFactor)
         {
             Scale_Factor = scaleFactor;
@@ -964,179 +1265,6 @@ namespace CGFXLibrary
             ColorData = new Color();
         }
     }
-
-
-    //public class Polygon
-    //{
-    //    public ScaleFactor Scale_Factor { get; set; }
-    //    public class ScaleFactor
-    //    {
-    //        public float VtScale { get; set; }
-    //        public float NrScale { get; set; }
-    //        //public float TrScale { get; set; } //Unnecessary (?)
-    //        public float TexCoordScale { get; set; }
-    //        public float TexCoord2Scale { get; set; }
-    //        public float TexCoord3Scale { get; set; }
-
-    //        public ScaleFactor(float Vertex, float Normal, float TexCoord0, float TexCoord1, float TexCoord2)
-    //        {
-    //            VtScale = Vertex;
-    //            NrScale = Normal;
-    //            TexCoordScale = TexCoord0;
-    //            TexCoord2Scale = TexCoord1;
-    //            TexCoord3Scale = TexCoord2;
-    //        }
-
-    //        public ScaleFactor()
-    //        {
-    //            VtScale = 0;
-    //            NrScale = 0;
-    //            TexCoordScale = 0;
-    //            TexCoord2Scale = 0;
-    //            TexCoord3Scale = 0;
-
-    //            //VtScale = 1.0f;
-    //            //NrScale = 1.0f;
-    //            //TexCoordScale = 1.0f;
-    //            //TexCoord2Scale = 1.0f;
-    //            //TexCoord3Scale = 1.0f;
-    //        }
-    //    }
-
-    //    //public float ScaleFactor { get; set; } = 1;
-    //    public Vector3 Vertex { get; set; }
-    //    public Vector3 Normal { get; set; }
-    //    public Vector3 Tangent { get; set; }
-    //    public Vector2 TexCoord { get; set; }
-    //    public Vector2 TexCoord2 { get; set; }
-    //    public Vector2 TexCoord3 { get; set; }
-    //    public Color ColorData { get; set; }
-
-    //    public struct Color
-    //    {
-    //        public byte R;
-    //        public byte G;
-    //        public byte B;
-    //        public byte A;
-
-    //        /// <summary>
-    //        /// Convert to float array : 0=>R, 1=>G, 2=>B, 3=>A
-    //        /// </summary>
-    //        /// <returns></returns>
-    //        public float[] ToArray()
-    //        {
-    //            var vR = (float)Math.Round((R / 255F), 2, MidpointRounding.AwayFromZero);
-    //            var vG = (float)Math.Round((G / 255F), 2, MidpointRounding.AwayFromZero);
-    //            var vB = (float)Math.Round((B / 255F), 2, MidpointRounding.AwayFromZero);
-    //            var vA = (float)Math.Round((A / 255F), 2, MidpointRounding.AwayFromZero);
-
-    //            return new float[] { vR, vG, vB, vA };
-    //        }
-
-    //        public Color(byte ColorR, byte ColorG, byte ColorB, byte ColorA)
-    //        {
-    //            R = ColorR;
-    //            G = ColorG;
-    //            B = ColorB;
-    //            A = ColorA;
-    //        }
-    //    }
-
-    //    //public struct TextureCoordinate
-    //    //{
-    //    //    public double X;
-    //    //    public double Y;
-
-    //    //    public System.Windows.Point ToPoint()
-    //    //    {
-    //    //        return new System.Windows.Point(X, Y);
-    //    //    }
-
-    //    //    public TextureCoordinate(double pX, double pY)
-    //    //    {
-    //    //        X = pX;
-    //    //        Y = pY;
-    //    //    }
-    //    //}
-
-    //    public void UpToY()
-    //    {
-    //        Vertex = new Vector3(Vertex.X, Vertex.Z, Vertex.Y);
-    //    }
-
-    //    public T[] GetScaledValue<T>(DataType dataType) where T : struct
-    //    {
-    //        if (typeof(T) == typeof(float) || typeof(T) == typeof(double))
-    //        {
-
-    //        }
-
-    //        T[] obj = new T[(int)dataType];
-
-
-    //        if (dataType == DataType.Vt) obj = new T[] { (T)(object)(Vertex.X * Scale_Factor.VtScale), (T)(object)(Vertex.Y * Scale_Factor.VtScale), (T)(object)(Vertex.Z * Scale_Factor.VtScale) };
-    //        else if (dataType == DataType.Nr) obj = new T[] { (T)(object)(Normal.X * Scale_Factor.NrScale), (T)(object)(Normal.Y * Scale_Factor.NrScale), (T)(object)(Normal.Z * Scale_Factor.NrScale) };
-    //        else if (dataType == DataType.Tr) obj = (Vector3)Tangent; //No ScaleFactor
-    //        else if (dataType == DataType.TexCoord0) obj = new Vector2(TexCoord.X * Scale_Factor.TexCoordScale, TexCoord.Y * Scale_Factor.TexCoordScale);
-    //        else if (dataType == DataType.TexCoord1) obj = new Vector2(TexCoord2.X * Scale_Factor.TexCoord2Scale, TexCoord2.Y * Scale_Factor.TexCoord2Scale);
-    //        else if (dataType == DataType.TexCoord2) obj = new Vector2(TexCoord3.X * Scale_Factor.TexCoord3Scale, TexCoord3.Y * Scale_Factor.TexCoord3Scale);
-    //        return obj as T[];
-    //    }
-
-    //    public void Test()
-    //    {
-
-    //        var g = GetScaledValue<float>(DataType.Vt);
-    //    }
-
-    //    public enum DataType
-    //    {
-    //        Vt = 3,
-    //        Nr = 3,
-    //        Tr = 3,
-    //        TexCoord0 = 2,
-    //        TexCoord1 = 2,
-    //        TexCoord2 = 2,
-    //        Color = 4,
-    //    }
-
-    //    public T Scaled<T>(DataType dataType)
-    //    {
-    //        object obj = new object();
-
-    //        if (dataType == DataType.Vt) obj = new Vector3(Vertex.X * Scale_Factor.VtScale, Vertex.Y * Scale_Factor.VtScale, Vertex.Z * Scale_Factor.VtScale);
-    //        if (dataType == DataType.Nr) obj = new Vector3(Normal.X * Scale_Factor.NrScale, Normal.Y * Scale_Factor.NrScale, Normal.Z * Scale_Factor.NrScale);
-    //        if (dataType == DataType.Tr) obj = (Vector3)Tangent; //No ScaleFactor
-    //        if (dataType == DataType.TexCoord0) obj = new Vector2(TexCoord.X * Scale_Factor.TexCoordScale, TexCoord.Y * Scale_Factor.TexCoordScale);
-    //        if (dataType == DataType.TexCoord1) obj = new Vector2(TexCoord2.X * Scale_Factor.TexCoord2Scale, TexCoord2.Y * Scale_Factor.TexCoord2Scale);
-    //        if (dataType == DataType.TexCoord2) obj = new Vector2(TexCoord3.X * Scale_Factor.TexCoord3Scale, TexCoord3.Y * Scale_Factor.TexCoord3Scale);
-    //        return (T)obj;
-    //    }
-
-    //    public Polygon(Vector3 Vt, Vector3 Nr, Vector3 Tr, Vector2 TexCoord_0, Vector2 TexCoord_1, Vector2 TexCoord_2, Color color, ScaleFactor scaleFactor)
-    //    {
-    //        Scale_Factor = scaleFactor;
-    //        Vertex = Vt;
-    //        Normal = Nr;
-    //        Tangent = Tr;
-    //        TexCoord = TexCoord_0;
-    //        TexCoord2 = TexCoord_1;
-    //        TexCoord3 = TexCoord_2;
-    //        ColorData = color;
-    //    }
-
-    //    public Polygon()
-    //    {
-    //        Scale_Factor = new ScaleFactor();
-    //        Vertex = new Vector3();
-    //        Normal = new Vector3();
-    //        Tangent = new Vector3();
-    //        TexCoord = new Vector2();
-    //        TexCoord2 = new Vector2();
-    //        TexCoord3 = new Vector2();
-    //        ColorData = new Color();
-    //    }
-    //}
 
     public class Misc
     {

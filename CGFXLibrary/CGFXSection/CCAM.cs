@@ -10,9 +10,9 @@ using System.Windows;
 namespace CGFXLibrary.CGFXSection
 {
     /// <summary>
-    /// Camera
+    /// Camera (Flag : 0x0A000040)
     /// </summary>
-    public class CCAM
+    public class CCAM : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
         public char[] CCAM_Header { get; set; }
@@ -264,97 +264,6 @@ namespace CGFXLibrary.CGFXSection
             }
         }
 
-        #region delete
-        //public UnknownData0 UnknownData_0 { get; set; }
-        //public class UnknownData0
-        //{
-        //    public Flags Flags { get; set; }
-        //    public List<NamedValue> NamedValueList { get; set; }
-
-        //    public void ReadUnknownData(BinaryReader br, byte[] BOM)
-        //    {
-        //        EndianConvert endianConvert = new EndianConvert(BOM);
-        //        Flags = new Flags(br.ReadBytes(4));
-
-        //        //Aim => 00 00 00 80 [float(?), x5] | LookAt => 00 00 00 40 [float, x7] | Rotate => 00 00 00 20 [float(?), x4]
-        //        if (Flags.IdentFlag.SequenceEqual(new byte[] { 0x00, 0x00, 0x00, 0x20 }))
-        //        {
-        //            NamedValueList.Add(new NamedValue("UnknownValue0", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("Rotate_X", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("Rotate_Y", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("Rotate_Z", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //        }
-        //        else if (Flags.IdentFlag.SequenceEqual(new byte[] { 0x00, 0x00, 0x00, 0x40 }))
-        //        {
-        //            NamedValueList.Add(new NamedValue("UnknownValue0", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("LookAt_X", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("LookAt_Y", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("LookAt_Z", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("UpVector_X", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("UpVector_Y", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("UpVector_Z", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //        }
-        //        else if (Flags.IdentFlag.SequenceEqual(new byte[] { 0x00, 0x00, 0x00, 0x80 }))
-        //        {
-        //            NamedValueList.Add(new NamedValue("UnknownValue0", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("UnknownValue1", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("UnknownValue2", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("UnknownValue3", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //            NamedValueList.Add(new NamedValue("UnknownValue4", BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0)));
-        //        }
-        //    }
-
-        //    public UnknownData0()
-        //    {
-        //        Flags = new Flags(new byte[4]);
-        //        NamedValueList = new List<NamedValue>();
-        //    }
-        //}
-
-        //public UnknownData0 UnknownData_0 { get; set; }
-        //public class UnknownData0
-        //{
-        //    public Flags Flags { get; set; }
-        //    public float UnknownValue0 { get; set; }
-        //    public float LookAt_X { get; set; }
-        //    public float LookAt_Y { get; set; }
-        //    public float LookAt_Z { get; set; }
-        //    public float UpVector_X { get; set; }
-        //    public float UpVector_Y { get; set; }
-        //    public float UpVector_Z { get; set; }
-
-        //    public void ReadUnknownData(BinaryReader br, byte[] BOM)
-        //    {
-        //        EndianConvert endianConvert = new EndianConvert(BOM);
-        //        Flags = new Flags(endianConvert.Convert(br.ReadBytes(4)));
-
-
-        //        //Aim => 00 00 00 80 [float(?), x5] | LookAt => 00 00 00 40 [float, x7] | Rotate => 00 00 00 20 [float(?), x4]
-
-        //        //00 00 00 40
-        //        UnknownValue0 = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
-        //        LookAt_X = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
-        //        LookAt_Y = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
-        //        LookAt_Z = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
-        //        UpVector_X = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
-        //        UpVector_Y = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
-        //        UpVector_Z = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
-        //    }
-
-        //    public UnknownData0()
-        //    {
-        //        Flags = new Flags(new byte[4]);
-        //        UnknownValue0 = 0;
-        //        LookAt_X = 0;
-        //        LookAt_Y = 0;
-        //        LookAt_Z = 0;
-        //        UpVector_X = 0;
-        //        UpVector_Y = 0;
-        //        UpVector_Z = 0;
-        //    }
-        //}
-        #endregion
-
         public int UnknownOffset1 { get; set; } //0x4
 
         public Projection ProjectionSetting { get; set; }
@@ -480,7 +389,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(DICTOffset, SeekOrigin.Current);
 
-                UnknownDICT.ReadDICT(br, BOM);
+                UnknownDICT.ReadDICT(br, BOM, true);
 
                 br.BaseStream.Position = Pos;
             }
@@ -549,6 +458,16 @@ namespace CGFXLibrary.CGFXSection
             W_FlipValue = BitConverter.ToSingle(endianConvert.Convert(br.ReadBytes(4)), 0);
 
 
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadCCAM(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM)
+        {
+            throw new NotImplementedException();
         }
 
         public CCAM()

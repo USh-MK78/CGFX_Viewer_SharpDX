@@ -366,10 +366,11 @@ Texture2D Texture1 : register(t64);
 Texture2D Texture2 : register(t65);
 Texture2D Texture3 : register(t66);
 
-//SamplerState samplerSurface0 : register(s10);
-//SamplerState samplerSurface1 : register(s11);
-//SamplerState samplerSurface2 : register(s12);
-//SamplerState samplerSurface3 : register(s13);
+//10, 11, 12, 13
+SamplerState samplerSurface0 : register(s10);
+SamplerState samplerSurface1 : register(s11);
+SamplerState samplerSurface2 : register(s12);
+SamplerState samplerSurface3 : register(s13);
 
 Texture2D AlphaMap0 : register(t67);
 Texture2D AlphaMap1 : register(t68);

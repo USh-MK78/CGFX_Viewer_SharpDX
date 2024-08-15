@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace CGFXLibrary.CGFXSection
 {
     /// <summary>
-    /// Vertex Light
+    /// Vertex Light (Flag : 0x22020040)
     /// </summary>
-    public class CVLT
+    public class CVLT : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
         public char[] CVLT_Header { get; set; }
@@ -41,6 +41,16 @@ namespace CGFXLibrary.CGFXSection
 
                 br.BaseStream.Position = Pos;
             }
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadCVLT(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM = null)
+        {
+            throw new NotImplementedException();
         }
 
         public CVLT()

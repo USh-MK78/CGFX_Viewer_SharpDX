@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms.Design;
 using System.Windows.Media.Media3D;
 using CGFXLibrary;
+using CGFXLibrary.SOBJ_Format.ShapeData;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.PrimitiveSet.Primitive.IndexStreamCtr
 {
@@ -60,7 +61,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.Primitive
 
             public Vector3 Size { get; set; }
 
-            public BoundingBox(SOBJ.Shape.BoundingBox boundingBox)
+            public BoundingBox(Shape.BoundingBox boundingBox)
             {
                 Flags = boundingBox.Flags;
                 Position = boundingBox.Position;
@@ -82,7 +83,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.Primitive
             }
         }
 
-        public IndexStreamCtr_PropertyGrid(SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr indexStreamCtr)
+        public IndexStreamCtr_PropertyGrid(Shape.PrimitiveSet.Primitive.IndexStreamCtr indexStreamCtr)
         {
             IndexStreamOffset = indexStreamCtr.IndexStreamOffset;
             Flags = indexStreamCtr.Flags;
@@ -120,7 +121,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.Primitive
             IWindowsFormsEditorService svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             if (svc != null && value != null)
             {
-                IndexStreamCtrEditorForm form = new IndexStreamCtrEditorForm(value as List<SOBJ.Shape.PrimitiveSet.Primitive.IndexStreamCtr>);
+                IndexStreamCtrEditorForm form = new IndexStreamCtrEditorForm(value as List<Shape.PrimitiveSet.Primitive.IndexStreamCtr>);
                 form.ShowDialog();
 
                 value = form.indexStreamCtr_List;

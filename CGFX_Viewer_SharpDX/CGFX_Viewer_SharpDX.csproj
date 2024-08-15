@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="BitOperationTool.cs" />
     <Compile Include="CGFXEffectManager.cs" />
+    <Compile Include="CGFXPropertyGridSet\CANM_PropertyGrid.cs" />
     <Compile Include="CGFXPropertyGridSet\CCAM_PropertyGrid.cs" />
     <Compile Include="CGFXPropertyGridSet\CENV_PropertyGrid.cs" />
     <Compile Include="CGFXPropertyGridSet\CFOG_PropertyGrid.cs" />
@@ -171,6 +172,14 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyGridForms\General\UserDataForm\UserDataEntryPropertyGrid.cs" />
+    <Compile Include="PropertyGridForms\Section\CANM\CANMEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropertyGridForms\Section\CANM\CANMEditor.Designer.cs">
+      <DependentUpon>CANMEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyGridForms\Section\CANM\CANM_CurveData_PropertyGrid.cs" />
+    <Compile Include="PropertyGridForms\Section\CANM\PathTool.cs" />
     <Compile Include="PropertyGridForms\Section\CMDL\ShapeData\PrimitiveSet\PrimitiveSetEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -238,6 +247,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="PropertyGridForms\Section\CANM\CANMEditor.resx">
+      <DependentUpon>CANMEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PropertyGridForms\Section\CMDL\ShapeData\PrimitiveSet\PrimitiveSetEditorForm.resx">
       <DependentUpon>PrimitiveSetEditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -281,6 +293,10 @@
     <ProjectReference Include="..\CGFXLibrary\CGFXLibrary.csproj">
       <Project>{c3f6783d-8407-446e-ab92-ee827e9fa436}</Project>
       <Name>CGFXLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ControlLibrary\ControlLibrary.csproj">
+      <Project>{57d4bd3a-f85c-4da6-82c7-edcdb41a9815}</Project>
+      <Name>ControlLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\LockBitImageTools\LockBitImageTools.csproj">
       <Project>{d689b11b-79da-401b-aa6b-f2bf4f785cf0}</Project>

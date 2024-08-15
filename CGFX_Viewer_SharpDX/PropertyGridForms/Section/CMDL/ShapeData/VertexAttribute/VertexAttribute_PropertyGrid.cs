@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.Design;
 using CGFXLibrary;
+using CGFXLibrary.SOBJ_Format.ShapeData;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAttribute
 {
@@ -25,7 +26,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
         public Param.Param_PropertyGrid Params { get; set; }
 
-        public VertexAttribute_PropertyGrid(SOBJ.Shape.VertexAttribute vertexAttribute)
+        public VertexAttribute_PropertyGrid(Shape.VertexAttribute vertexAttribute)
         {
             VertexAttributeOffset = vertexAttribute.VertexAttributeOffset;
             Flag = vertexAttribute.Flag;
@@ -54,7 +55,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
             IWindowsFormsEditorService svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             if (svc != null && value != null)
             {
-                VertexAttributeEditorForm form = new VertexAttributeEditorForm(value as List<SOBJ.Shape.VertexAttribute>);
+                VertexAttributeEditorForm form = new VertexAttributeEditorForm(value as List<Shape.VertexAttribute>);
                 form.ShowDialog();
 
                 value = form.vertexAttribute_List;

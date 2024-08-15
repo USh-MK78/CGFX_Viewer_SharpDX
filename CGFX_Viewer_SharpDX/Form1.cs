@@ -40,6 +40,9 @@ using CGFX_Viewer_SharpDX.MeshBuilderComponent.Node;
 using CGFXLibrary.CGFXSection;
 using static CGFXLibrary.Flags;
 using static CGFXLibrary.VertexAttribute;
+using CGFX_Viewer_SharpDX.PropertyGridForms.Section.CANM;
+using SharpDX.Direct3D11;
+using CGFXLibrary.SOBJ_Format;
 
 namespace CGFX_Viewer_SharpDX
 {
@@ -119,12 +122,12 @@ namespace CGFX_Viewer_SharpDX
                     {
                         if (sw == CGFXFormat.CGFXEntryData.Models)
                         {
-                            var lt = r.CGFXData.CMDLSection.meshDatas.Select(x => new TreeNode(x.SOBJData.SOBJ_Mesh_Section.Meshes.MeshName)).ToList();
-                            var mt = r.CGFXData.CMDLSection.MTOB_DICT.DICT_Entries.Select(x => new TreeNode(x.CGFXData.MTOBSection.Name)).ToList();
-                            var nt = r.CGFXData.CMDLSection.shapeDatas.Select((x, Id) => new { Id, x }).Select(x => new TreeNode(x.Id.ToString())).ToList();
+                            var lt = ((CMDL)r.CGFXData.CGFXDataSection).meshDatas.Select(x => new TreeNode(((SOBJ)x.SOBJData.CGFXDataSection).Mesh.MeshName)).ToList();
+                            var mt = ((CMDL)r.CGFXData.CGFXDataSection).MTOB_DICT.DICT_Entries.Select(x => new TreeNode(((MTOB)x.CGFXData.CGFXDataSection).Name)).ToList();
+                            var nt = ((CMDL)r.CGFXData.CGFXDataSection).shapeDatas.Select((x, Id) => new { Id, x }).Select(x => new TreeNode(x.Id.ToString())).ToList();
 
                             //var mtName = r.CGFXData.CMDLSection.UnknownDICT.DICT_Entries.Select(x => new TreeNode(x.CGFXData.NativeDataSections.CMDL_Native.MaterialName_Set.Name)).ToList();
-                            var mtName = r.CGFXData.CMDLSection.UnknownDICT.DICT_Entries.Select(x => new TreeNode(x.CGFXData.Name_Set.Name)).ToList();
+                            var mtName = ((CMDL)r.CGFXData.CGFXDataSection).UnknownDICT.DICT_Entries.Select(x => new TreeNode(x.Name)).ToList();
 
                             TreeNode treeNode = new TreeNode(r.Name);
                             treeNode.Nodes.Add(new TreeNode("Mesh", lt.ToArray()));
@@ -186,18 +189,18 @@ namespace CGFX_Viewer_SharpDX
                         textBox1.Text += SectionCount.Key + ":" + SectionCount.Value.NumOfEntries + "\r\n";
                     }
                 }
-                if (Set.Length == 2)
+                else if (Set.Length == 2)
                 {
                     System.Windows.MessageBox.Show("Selected " + Set[1]);
                 }
-                if (Set.Length == 3)
+                else if (Set.Length == 3)
                 {
                     CGFXFormat.CGFXEntryData EntryData = (CGFXFormat.CGFXEntryData)Enum.Parse(typeof(CGFXFormat.CGFXEntryData), Set[1]);
                     var CGFXData = CGFX.DICTAndSectionData[EntryData].DICT_Entries.Find(x => x.Name == Set[2]).CGFXData;
 
                     if (EntryData == CGFXFormat.CGFXEntryData.Models)
                     {
-                        var Models = CGFXData.CMDLSection;
+                        var Models = (CMDL)CGFXData.CGFXDataSection;
                         propertyGrid3.SelectedObject = new CGFXPropertyGridSet.CMDL_PropertyGrid(Models);
 
                         //MaterialDictionary
@@ -205,7 +208,7 @@ namespace CGFX_Viewer_SharpDX
                         foreach (var MTOB in Models.MTOB_DICT.DICT_Entries.Select((value, i) => new { Value = value, Index = i }))
                         {
                             var DICTName = MTOB.Value.Name;
-                            MaterialDictionary.Add(MTOB.Index, MTOB.Value.CGFXData.MTOBSection);
+                            MaterialDictionary.Add(MTOB.Index, (MTOB)MTOB.Value.CGFXData.CGFXDataSection);
                         }
 
                         //Get Texture (Bitmap)
@@ -214,14 +217,14 @@ namespace CGFX_Viewer_SharpDX
                         {
                             string s = df.Name;
 
-                            string TextureName = df.CGFXData.TXOBSection.TextureSection.Name;
-                            CMDL_BitmapDictionary.Add(TextureName, df.CGFXData.TXOBSection.TextureSection);
+                            string TextureName = ((TXOB.Texture)df.CGFXData.CGFXDataSection).Name;
+                            CMDL_BitmapDictionary.Add(TextureName, (TXOB.Texture)df.CGFXData.CGFXDataSection);
                         }
 
                         foreach (var qs in Models.meshDatas)
                         {
                             //int MtlId = qs.SOBJData.Meshes.MaterialIndex;
-                            int MtlId = qs.SOBJData.SOBJ_Mesh_Section.Meshes.MaterialIndex;
+                            int MtlId = ((SOBJ)qs.SOBJData.CGFXDataSection).Mesh.MaterialIndex;
                             MTOB MTOB = MaterialDictionary[MtlId] as MTOB;
 
                             string MaterialName = MTOB.Name;
@@ -234,9 +237,8 @@ namespace CGFX_Viewer_SharpDX
                             var MaterialColor = MTOB.MaterialColors;
                             var ConstantColor = MTOB.ConstantColorData;
 
-
-                            int ShapeID = qs.SOBJData.SOBJ_Mesh_Section.Meshes.ShapeIndex;
-                            var Shape = Models.shapeDatas[ShapeID].SOBJData.SOBJ_Shape_Section.Shapes;
+                            int ShapeID = ((SOBJ)qs.SOBJData.CGFXDataSection).Mesh.ShapeIndex;
+                            var Shape = ((SOBJ)Models.shapeDatas[ShapeID].SOBJData.CGFXDataSection).Shape;
                             var indexStreamCtrs = Shape.primitiveSets.Select(x => x.GetIndexStreamCtrPrimitive()).ToList();
 
                             foreach (var VertexAttr in Shape.VertexAttributes.Select((value, i) => new { Value = value, Index = i }))
@@ -329,9 +331,9 @@ namespace CGFX_Viewer_SharpDX
                                     Dictionary<int, Data.Texture.TextureModelSlot> textureModels = new Dictionary<int, Data.Texture.TextureModelSlot>();
                                     for (int Count = 0; Count < MaterialInfoSetList.Count; Count++)
                                     {
-                                        if (MaterialInfoSetList[Count].TXOBMaterialDataSection.TXOB_MaterialSection != null)
+                                        if (((TXOB.MaterialInfo)MaterialInfoSetList[Count].TXOBMaterialDataSection.CGFXDataSection) != null)
                                         {
-                                            var MatName = MaterialInfoSetList[Count].TXOBMaterialDataSection.TXOB_MaterialSection.MaterialInfoSection.MTOB_MaterialName;
+                                            var MatName = ((TXOB.MaterialInfo)MaterialInfoSetList[Count].TXOBMaterialDataSection.CGFXDataSection).MTOB_MaterialName;
                                             if (MatName != null)
                                             {
                                                 if (CMDL_BitmapDictionary[MatName].TXOB_Bitmap != null)
@@ -386,13 +388,41 @@ namespace CGFX_Viewer_SharpDX
                                         float TranslateU = textureUVTransforms[i].TranslateU;
                                         float TranslateV = textureUVTransforms[i].TranslateV;
 
+                                        //var nt = textureUVTransforms[i].CalculateTextureCoordinateTypeValue;
+
                                         UVTransformArray[i] = new UVTransform(Rotate, new Vector2(ScaleU, ScaleV), new Vector2(TranslateU, TranslateV));
                                     }
 
                                     List<UVTransform> uVTransforms = UVTransformArray.ToList();
 
+                                    //TODO : Using SamplerState
+                                    var CalculateTextureCoordinateTypeAry = textureUVTransforms.Select(x => x.CalculateTextureCoordinateTypeValue).ToArray();
+
+                                    List<SamplerStateDescription> DiffuseSamplerStateDescriptionList = new List<SamplerStateDescription>();
+                                    foreach (var item in CalculateTextureCoordinateTypeAry)
+                                    {
+                                        DiffuseSamplerStateDescriptionList.Add(DefaultSamplers.LinearSamplerWrapAni1);
+                                        //DiffuseSamplerStateDescriptionList.Add(SamplerStateDescription.Default());
+
+                                        //SamplerStateDescription samplerStateDescription = SamplerStateDescription.Default();
+                                        //SamplerStateDescription samplerStateDescription = new SamplerStateDescription();
+                                        //samplerStateDescription.AddressU = TextureAddressMode.Mirror;
+                                        //samplerStateDescription.AddressV = TextureAddressMode.Wrap;
+                                    }
+
+                                    if (DiffuseSamplerStateDescriptionList.Count < 4)
+                                    {
+                                        int d = 4 - DiffuseSamplerStateDescriptionList.Count;
+
+                                        for (int i = 0; i < d; i++)
+                                        {
+                                            //DiffuseSamplerStateDescriptionList.Add(SamplerStateDescription.Default());
+                                            DiffuseSamplerStateDescriptionList.Add(DefaultSamplers.LinearSamplerWrapAni1);
+                                        }
+                                    }
+
                                     var BaseColor = new Data.ColorProperty.Base(MaterialColor.AmbientData.GetColor4(), MaterialColor.DiffuseData.GetColor4(), MaterialColor.EmissionData.GetColor4(), MaterialColor.Speculer0Data.GetColor4(), MaterialColor.Speculer1Data.GetColor4());
-                                    CGFXMaterial cgfxMaterial = new CGFXMaterial { TextureSlotList = textureModels, TextureConbinerEquationList = textureConbinerEquations, ConstantColor = constantColor, Blending = blending, IsFragmentLighting = true, UVTransform = uVTransforms, BaseColor = BaseColor };
+                                    CGFXMaterial cgfxMaterial = new CGFXMaterial() { TextureSlotList = textureModels, TextureConbinerEquationList = textureConbinerEquations, ConstantColor = constantColor, Blending = blending, IsFragmentLighting = false, UVTransform = uVTransforms, BaseColor = BaseColor, DiffuseMapSamplerList = DiffuseSamplerStateDescriptionList };
                                     CGFXMeshGeometryModel3D bufferMeshGeometryModel3D = new CGFXMeshGeometryModel3D { Geometry = cgfxMeshGeometry3D, Material = cgfxMaterial, WireframeColor = Color.FromArgb(0xFF, 0x00, 0x00, 0xFF), RenderWireframe = true };
 
                                     //render.Viewport3DX.Items.Add(bufferMeshGeometryModel3D);
@@ -407,107 +437,112 @@ namespace CGFX_Viewer_SharpDX
                             }
                         }
                     }
-                    if (EntryData == CGFXFormat.CGFXEntryData.Textures)
+                    else if(EntryData == CGFXFormat.CGFXEntryData.Textures)
                     {
-                        var Textures = CGFXData.TXOBSection.TextureSection;
+                        //var Textures = ((TXOB.Texture)CGFXData.CGFXDataSection).TextureSection;
+                        var Textures = ((TXOB.Texture)CGFXData.CGFXDataSection);
                         pictureBox1.Image = Textures.TXOB_Bitmap;
                         propertyGrid2.SelectedObject = new CGFXPropertyGridSet.TXOB_PropertyGrid(Textures);
                     }
-                    if (EntryData == CGFXFormat.CGFXEntryData.LookupTables)
+                    else if(EntryData == CGFXFormat.CGFXEntryData.LookupTables)
                     {
-                        var LUTS = CGFXData.LUTSSection;
+                        var LUTS = (LUTS)CGFXData.CGFXDataSection;
                         //LUTS_PropertyGrid.SelectedObject = ht.LUTSSection;
                         LUTS_PropertyGrid.SelectedObject = new CGFXPropertyGridSet.LUTS_PropertyGrid(LUTS);
                     }
-                    if (EntryData == CGFXFormat.CGFXEntryData.Materials) return;
-                    if (EntryData == CGFXFormat.CGFXEntryData.Shaders) return;
-                    if (EntryData == CGFXFormat.CGFXEntryData.Cameras)
+                    else if(EntryData == CGFXFormat.CGFXEntryData.Materials) return;
+                    else if(EntryData == CGFXFormat.CGFXEntryData.Shaders) return;
+                    else if(EntryData == CGFXFormat.CGFXEntryData.Cameras)
                     {
                         //Camera
-                        CCAM_PropertyGrid.SelectedObject = new CGFXPropertyGridSet.CCAM_PropertyGrid(CGFXData.CCAMSection);
+                        CCAM_PropertyGrid.SelectedObject = new CGFXPropertyGridSet.CCAM_PropertyGrid((CCAM)CGFXData.CGFXDataSection);
                     }
-                    if (EntryData == CGFXFormat.CGFXEntryData.Lights)
+                    else if(EntryData == CGFXFormat.CGFXEntryData.Lights)
                     {
-                        if (CGFXData.Flag.GetFlags().HasFlag(CGFXIdentFlag.F6))
+                        if (CGFXData.CGFXFlags.GetFlags().HasFlag(CGFXIdentFlag.F6))
                         {
-                            if ((CGFXData.Flag.GetIdentFlagUInt() & 0x0000FF00) == 0)
+                            if ((CGFXData.CGFXFlags.GetIdentFlagUInt() & 0x0000FF00) == 0)
                             {
                                 //Fragment
-                                propertyGrid6.SelectedObject = CGFXData.CFLTSection;
+                                propertyGrid6.SelectedObject = (CFLT)CGFXData.CGFXDataSection;
                             }
-                            else if ((CGFXData.Flag.GetIdentFlagUInt() & 0x0000FF00) != 0)
+                            else if ((CGFXData.CGFXFlags.GetIdentFlagUInt() & 0x0000FF00) != 0)
                             {
-                                if (CGFXData.Flag.GetFlags().HasFlag(CGFXIdentFlag.F9))
+                                if (CGFXData.CGFXFlags.GetFlags().HasFlag(CGFXIdentFlag.F9))
                                 {
                                     //Hemisphere
-                                    propertyGrid6.SelectedObject = CGFXData.CHLTSection;
-
+                                    propertyGrid6.SelectedObject = (CHLT)CGFXData.CGFXDataSection;
                                 }
-                                else if (CGFXData.Flag.GetFlags().HasFlag(CGFXIdentFlag.F10))
+                                else if (CGFXData.CGFXFlags.GetFlags().HasFlag(CGFXIdentFlag.F10))
                                 {
                                     //VertexLight
-                                    propertyGrid6.SelectedObject = CGFXData.CVLTSection;
+                                    propertyGrid6.SelectedObject = (CVLT)CGFXData.CGFXDataSection;
                                 }
-                                else if (CGFXData.Flag.GetFlags().HasFlag(CGFXIdentFlag.F11))
+                                else if (CGFXData.CGFXFlags.GetFlags().HasFlag(CGFXIdentFlag.F11))
                                 {
                                     //AmbientLight
-                                    propertyGrid6.SelectedObject = CGFXData.CALTSection;
+                                    propertyGrid6.SelectedObject = (CALT)CGFXData.CGFXDataSection;
                                 }
                             }
                         }
                     }
-                    if (EntryData == CGFXFormat.CGFXEntryData.Fogs)
+                    else if(EntryData == CGFXFormat.CGFXEntryData.Fogs)
                     {
-                        var fogs = CGFXData.CFOGSection;
+                        var fogs = (CFOG)CGFXData.CGFXDataSection;
                         propertyGrid1.SelectedObject = new CGFXPropertyGridSet.CFOG_PropertyGrid(fogs);
                     }
-                    if (EntryData == CGFXFormat.CGFXEntryData.Environments)
+                    else if(EntryData == CGFXFormat.CGFXEntryData.Environments)
                     {
-                        var Envs = CGFXData.CENVSection;
+                        var Envs = (CENV)CGFXData.CGFXDataSection;
                         propertyGrid7.SelectedObject = new CGFXPropertyGridSet.CENV_PropertyGrid(Envs);
                     }
-                    if (EntryData == CGFXFormat.CGFXEntryData.Texture_Animations)
+                    else if (EntryData == CGFXFormat.CGFXEntryData.Skeleton_Animations)
                     {
-                        var TexAnim = CGFXData.CANMSection;
-                        propertyGrid8.SelectedObject = TexAnim;
+                        var SkeletonAnim = (CANM)CGFXData.CGFXDataSection;
+                        propertyGrid10.SelectedObject = new CGFXPropertyGridSet.CANM_PropertyGrid(SkeletonAnim);
                     }
-                    if (EntryData == CGFXFormat.CGFXEntryData.Emitters)
+                    else if(EntryData == CGFXFormat.CGFXEntryData.Texture_Animations)
                     {
-                        var Emitter = CGFXData.PEMTSection;
+                        var TexAnim = (CANM)CGFXData.CGFXDataSection;
+                        propertyGrid8.SelectedObject = new CGFXPropertyGridSet.CANM_PropertyGrid(TexAnim);
+                    }
+                    else if(EntryData == CGFXFormat.CGFXEntryData.Emitters)
+                    {
+                        var Emitter = (PEMT)CGFXData.CGFXDataSection;
                         propertyGrid9.SelectedObject = Emitter;
                     }
                 }
-                if (Set.Length == 4)
+                else if (Set.Length == 4)
                 {
                     CGFXFormat.CGFXEntryData EntryData = (CGFXFormat.CGFXEntryData)Enum.Parse(typeof(CGFXFormat.CGFXEntryData), Set[1]);
                     var ht = CGFX.DICTAndSectionData[EntryData].DICT_Entries.Find(x => x.Name == Set[2]).CGFXData;
                 }
-                if (Set.Length == 5)
+                else if (Set.Length == 5)
                 {
                     CGFXFormat.CGFXEntryData EntryData = (CGFXFormat.CGFXEntryData)Enum.Parse(typeof(CGFXFormat.CGFXEntryData), Set[1]);
                     var ht = CGFX.DICTAndSectionData[EntryData].DICT_Entries.Find(x => x.Name == Set[2]).CGFXData;
 
                     if (EntryData == CGFXFormat.CGFXEntryData.Models)
                     {
-                        var Models = ht.CMDLSection;
+                        var Models = (CMDL)ht.CGFXDataSection;
                         propertyGrid3.SelectedObject = null;
                         if (Set[3] == "Mesh")
                         {
-                            propertyGrid3.SelectedObject = new CGFXPropertyGridSet.CMDL_MeshData_PropertyGrid(Models.meshDatas.Find(x => x.SOBJData.SOBJ_Mesh_Section.Meshes.MeshName == Set[4]));
+                            propertyGrid3.SelectedObject = new CGFXPropertyGridSet.CMDL_MeshData_PropertyGrid(Models.meshDatas.Find(x => ((SOBJ)x.SOBJData.CGFXDataSection).Mesh.MeshName == Set[4]));
                         }
-                        if (Set[3] == "Material")
+                        else if(Set[3] == "Material")
                         {
-                            propertyGrid4.SelectedObject = new CGFXPropertyGridSet.MTOB_PropertyGrid(Models.MTOB_DICT.DICT_Entries.Find(x => x.Name == Set[4]).CGFXData.MTOBSection);
+                            propertyGrid4.SelectedObject = new CGFXPropertyGridSet.MTOB_PropertyGrid((MTOB)Models.MTOB_DICT.DICT_Entries.Find(x => x.Name == Set[4]).CGFXData.CGFXDataSection);
                         }
-                        if (Set[3] == "Shape")
+                        else if(Set[3] == "Shape")
                         {
-                            propertyGrid3.SelectedObject = new PropertyGridForms.Section.CMDL.ShapeData.ShapeData_PropertyGrid(Models.shapeDatas[Convert.ToInt32(Set[4])].SOBJData.SOBJ_Shape_Section.Shapes);
+                            propertyGrid3.SelectedObject = new PropertyGridForms.Section.CMDL.ShapeData.ShapeData_PropertyGrid(((SOBJ)Models.shapeDatas[Convert.ToInt32(Set[4])].SOBJData.CGFXDataSection).Shape);
                             //var i = Models.shapeDatas[Convert.ToInt32(Set[4])].SOBJData.Shapes.VertexAttributes.Select(x => x.Streams.PolygonList).ToList();
                         }
-                        if (Set[3] == "LinkedMaterial")
+                        else if(Set[3] == "LinkedMaterial")
                         {
                             //propertyGrid3.SelectedObject = Models.UnknownDICT.DICT_Entries.Find(x => x.Name == Set[4]).CGFXData.NativeDataSections.CMDL_Native.MaterialName_Set;
-                            propertyGrid3.SelectedObject = Models.UnknownDICT.DICT_Entries.Find(x => x.Name == Set[4]).CGFXData.Name_Set;
+                            propertyGrid3.SelectedObject = (CGFXLibrary.CGFXSection.DataComponent.NameSetData)Models.UnknownDICT.DICT_Entries.Find(x => x.Name == Set[4]).CGFXData.CGFXDataSection;
                         }
                     }
                 }
@@ -552,6 +587,14 @@ namespace CGFX_Viewer_SharpDX
             propertyGrid8.SelectedObject = null;
 
             treeView1.Nodes.Clear();
+        }
+
+        private void cANMEditorCurveEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //CANMEditor cANMEditor = new CANMEditor();
+            //cANMEditor.Show();
+
+            //if (cANMEditor.)
         }
     }
 }

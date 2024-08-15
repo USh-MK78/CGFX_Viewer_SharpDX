@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace CGFXLibrary.CGFXSection
 {
     /// <summary>
-    /// Shader (0x01000080)
+    /// Shader (Flag : 0x01000080)
     /// </summary>
-    public class SHDR
+    public class SHDR : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
 
@@ -889,6 +889,16 @@ namespace CGFXLibrary.CGFXSection
             UnknownData11 = endianConvert.Convert(br.ReadBytes(4));
             UnknownData12 = endianConvert.Convert(br.ReadBytes(4));
             UnknownData13 = endianConvert.Convert(br.ReadBytes(4));
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadSHDR(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM)
+        {
+            throw new NotImplementedException();
         }
 
         public SHDR()

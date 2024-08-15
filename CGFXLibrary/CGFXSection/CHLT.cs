@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace CGFXLibrary.CGFXSection
 {
     /// <summary>
-    /// Hemisphere Light
+    /// Hemisphere Light (Flag : 0x22010040)
     /// </summary>
-    public class CHLT
+    public class CHLT : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
         public char[] CHLT_Header { get; set; }
@@ -41,6 +41,16 @@ namespace CGFXLibrary.CGFXSection
 
                 br.BaseStream.Position = Pos;
             }
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadCHLT(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM)
+        {
+            throw new NotImplementedException();
         }
 
         public CHLT()

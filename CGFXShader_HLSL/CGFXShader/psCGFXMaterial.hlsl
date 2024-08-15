@@ -417,10 +417,10 @@ float4 main(PSInputCGFX input) : SV_Target
     else if (bIsFragmentLighting == false)
     {
         ////FragmentLighting = false
-        float4 t0 = Texture0.Sample(samplerSurface, input.ps_t0);
-        float4 t1 = Texture1.Sample(samplerSurface, input.ps_t1);
-        float4 t2 = Texture2.Sample(samplerSurface, input.ps_t2);
-        float4 t3 = Texture3.Sample(samplerSurface, input.ps_t0);
+        float4 t0 = Texture0.Sample(samplerSurface0, input.ps_t0);
+        float4 t1 = Texture1.Sample(samplerSurface1, input.ps_t1);
+        float4 t2 = Texture2.Sample(samplerSurface2, input.ps_t2);
+        float4 t3 = Texture3.Sample(samplerSurface3, input.ps_t0);
         
         //Debug(p0)
         diffuse *= t0 + t1 + t2 + t3;

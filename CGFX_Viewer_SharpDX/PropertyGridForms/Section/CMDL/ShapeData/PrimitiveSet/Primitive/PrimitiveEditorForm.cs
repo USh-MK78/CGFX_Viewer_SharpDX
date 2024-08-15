@@ -8,14 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CGFXLibrary;
+using CGFXLibrary.SOBJ_Format.ShapeData;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.PrimitiveSet.Primitive
 {
     public partial class PrimitiveEditorForm : Form
     {
-        public List<SOBJ.Shape.PrimitiveSet.Primitive> primitive_List { get; set; }
+        public List<Shape.PrimitiveSet.Primitive> primitive_List { get; set; }
 
-        public PrimitiveEditorForm(List<SOBJ.Shape.PrimitiveSet.Primitive> primitives)
+        public PrimitiveEditorForm(List<Shape.PrimitiveSet.Primitive> primitives)
         {
             InitializeComponent();
             primitive_List = primitives;
@@ -50,7 +51,5 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.Primitive
             if (Primitive_ListBox.SelectedIndex == -1) return;
             Primitive_PG_Main.SelectedObject = new Primitive_PropertyGrid(primitive_List[Primitive_ListBox.SelectedIndex]);
         }
-
-
     }
 }

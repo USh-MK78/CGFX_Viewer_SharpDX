@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace CGFXLibrary.CGFXSection
 {
     /// <summary>
-    /// Emitter
+    /// Emitter (Flag : 0x06000040)
     /// </summary>
-    public class PEMT
+    public class PEMT : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
         public char[] PEMT_Header { get; set; }
@@ -41,6 +41,16 @@ namespace CGFXLibrary.CGFXSection
 
                 br.BaseStream.Position = Pos;
             }
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadPEMT(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM)
+        {
+            throw new NotImplementedException();
         }
 
         public PEMT()

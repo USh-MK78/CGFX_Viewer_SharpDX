@@ -1,5 +1,4 @@
-﻿using CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.PrimitiveSet.Primitive;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,14 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CGFXLibrary;
+using CGFXLibrary.SOBJ_Format.ShapeData;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAttribute
 {
     public partial class VertexAttributeEditorForm : Form
     {
-        public List<SOBJ.Shape.VertexAttribute> vertexAttribute_List { get; set; }
+        public List<Shape.VertexAttribute> vertexAttribute_List { get; set; }
 
-        public VertexAttributeEditorForm(List<SOBJ.Shape.VertexAttribute> vertexAttributes)
+        public VertexAttributeEditorForm(List<Shape.VertexAttribute> vertexAttributes)
         {
             InitializeComponent();
             vertexAttribute_List = vertexAttributes;
@@ -53,11 +53,11 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
             {
                 VertexAttributeEditor_PG_Main.SelectedObject = new VertexAttribute_PropertyGrid(vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex]);
 
-                if (vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Params != new SOBJ.Shape.VertexAttribute.Param())
+                if (vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Params != new Shape.VertexAttribute.Param())
                 {
                     VertexAttributeEditor_PG_Param.SelectedObject = new Param.Param_PropertyGrid(vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Params);
                 }
-                if (vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Streams != new SOBJ.Shape.VertexAttribute.Stream())
+                if (vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Streams != new Shape.VertexAttribute.Stream())
                 {
                     VertexAttributeEditor_PG_Stream.SelectedObject = new Stream.Stream_PropertyGrid(vertexAttribute_List[VertexAttribute_ListBox.SelectedIndex].Streams);
                     //VertexAttributeEditor_TabMain

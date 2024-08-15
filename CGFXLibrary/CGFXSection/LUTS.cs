@@ -10,7 +10,7 @@ namespace CGFXLibrary.CGFXSection
     /// <summary>
     /// Lookup Table (0x00000004)
     /// </summary>
-    public class LUTS
+    public class LUTS : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
 
@@ -94,10 +94,8 @@ namespace CGFXLibrary.CGFXSection
                 br.BaseStream.Seek(UserDataDICTOffset, SeekOrigin.Current);
 
                 DICT dICT = new DICT();
-                dICT.ReadDICT(br, BOM);
+                dICT.ReadDICT(br, BOM, true);
                 UserdataDICT = dICT;
-
-                //DICTList.Add(dICT);
 
                 br.BaseStream.Position = Pos;
             }
@@ -113,11 +111,22 @@ namespace CGFXLibrary.CGFXSection
                 //Move LookupTableProperty Offset
                 br.BaseStream.Seek(DICTEntriesOffset, SeekOrigin.Current);
 
-                //DICT dICT = new DICT();
-                //dICT.ReadDICT(br, BOM);
+                DICT dICT = new DICT();
+                dICT.ReadDICT(br, BOM, true); //ValueSet
+                LUTS_DICTData = dICT;
 
                 br.BaseStream.Position = Pos;
             }
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadLUTS(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM)
+        {
+            throw new NotImplementedException();
         }
 
         public LUTS()

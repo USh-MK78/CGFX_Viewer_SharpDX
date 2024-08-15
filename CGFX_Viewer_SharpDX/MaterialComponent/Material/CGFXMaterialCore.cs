@@ -274,16 +274,16 @@ namespace CGFX_Viewer_SharpDX.Component.Material
         /// <summary>
         /// Gets or sets the DiffuseMapSampler
         /// </summary>
-        private SamplerStateDescription diffuseMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
-        public SamplerStateDescription DiffuseMapSampler
+        private List<SamplerStateDescription> diffuseMapSamplerList = new List<SamplerStateDescription>(); //DefaultSamplers.LinearSamplerWrapAni4;
+        public List<SamplerStateDescription> DiffuseMapSamplerList
         {
             get
             {
-                return diffuseMapSampler;
+                return diffuseMapSamplerList;
             }
             set
             {
-                Set(ref diffuseMapSampler, value, "DiffuseMapSampler");
+                Set(ref diffuseMapSamplerList, value, "DiffuseMapSamplerList");
             }
         }
 

@@ -10,18 +10,17 @@ namespace CGFXLibrary.CGFXSection
     /// <summary>
     /// Environments
     /// </summary>
-    public class CENV
+    public class CENV : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
         public char[] CENV_Header { get; set; } //0x4
         public byte[] CENV_Revision { get; set; } //0x4
 
-        //CENV_Name
         public int CENV_NameOffset { get; set; }
 
         //UserData
-        public int CENV_NumOfUserDataDICTOffsetEntries { get; set; } //0x4
-        public int CENV_UserDataDICTOffset { get; set; }  //0x4
+        public int CENV_NumOfUserDataDICTOffsetEntries { get; set; }
+        public int CENV_UserDataDICTOffset { get; set; }
         public DICT CENV_UserData_DICT { get; set; }
 
         //Camera
@@ -107,8 +106,8 @@ namespace CGFXLibrary.CGFXSection
         }
 
         //Light
-        public int CENV_NumOfLIGHTOffsetEntries { get; set; }  //0x4
-        public int CENV_LightNameSetListOffset { get; set; }  //0x4
+        public int CENV_NumOfLIGHTOffsetEntries { get; set; }
+        public int CENV_LightNameSetListOffset { get; set; }
         public List<CENV_LIGHTNameGroup> CENV_LightNameGroup { get; set; }
         public class CENV_LIGHTNameGroup
         {
@@ -383,7 +382,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(CENV_UserDataDICTOffset, SeekOrigin.Current);
 
-                CENV_UserData_DICT.ReadDICT(br, BOM);
+                CENV_UserData_DICT.ReadDICT(br, BOM, true);
 
                 br.BaseStream.Position = Pos;
             }
@@ -451,6 +450,16 @@ namespace CGFXLibrary.CGFXSection
 
                 br.BaseStream.Position = Pos;
             }
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM = null)
+        {
+            Read_CENV(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM = null)
+        {
+            throw new NotImplementedException();
         }
 
         public CENV()

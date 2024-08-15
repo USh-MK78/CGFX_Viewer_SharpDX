@@ -22,11 +22,6 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         [Editor(typeof(CGFX_CustomPropertyGridClass.UserDataDictionaryEditor), typeof(UITypeEditor))]
         public List<CGFXFormat.CGFXData> userDataList { get => UserData_List; set => UserData_List = value; }
 
-
-        //public int CMDL_UserDataDICTCount { get; set; } //0x4
-        //public int CMDL_UserDataDICTOffset { get; set; } //0x4
-        //public DICT CMDL_UserData { get; set; }
-
         public bool IsBranchVisibleFlag1 { get; set; } //0x4
         public bool IsBranchVisibleFlag2 { get; set; } //0x4
 

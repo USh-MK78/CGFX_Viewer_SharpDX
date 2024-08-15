@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using CGFXLibrary;
+using CGFXLibrary.SOBJ_Format;
+using CGFXLibrary.SOBJ_Format.ShapeData;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData
 {
@@ -45,7 +47,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData
 
             public Vector3 Size { get; set; }
 
-            public BoundingBox(SOBJ.Shape.BoundingBox boundingBox)
+            public BoundingBox(Shape.BoundingBox boundingBox)
             {
                 Flags = boundingBox.Flags;
                 Position = boundingBox.Position;
@@ -55,7 +57,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData
 
             public BoundingBox()
             {
-                Flags = new Flags(new byte[] {0x00, 0x00, 0x00, 0x80});
+                Flags = new Flags(new byte[] { 0x00, 0x00, 0x00, 0x80 });
                 Position = new Vector3(0, 0, 0);
                 Matrix_BoundingBox = new MatrixData.Matrix_BoundingBox(1, 0, 0, 0, 1, 0, 0, 0, 1);
                 Size = new Vector3(1, 1, 1);
@@ -72,9 +74,9 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData
         [ReadOnly(true)]
         public int PrimitiveSetListOffset { get; set; }
 
-        public List<SOBJ.Shape.PrimitiveSet> PrimitiveSet_List = new List<SOBJ.Shape.PrimitiveSet>();
+        public List<Shape.PrimitiveSet> PrimitiveSet_List = new List<Shape.PrimitiveSet>();
         [Editor(typeof(PrimitiveSet.PrimitiveSetEditor), typeof(UITypeEditor))]
-        public List<SOBJ.Shape.PrimitiveSet> primitiveSets { get => PrimitiveSet_List; set => PrimitiveSet_List = value; }
+        public List<Shape.PrimitiveSet> PrimitiveSetList { get => PrimitiveSet_List; set => PrimitiveSet_List = value; }
 
         [ReadOnly(true)]
         public int BaseAddress { get; set; }
@@ -86,9 +88,9 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData
         public int VertexAttributeOffsetListOffset { get; set; }
 
         //Editor
-        public List<SOBJ.Shape.VertexAttribute> VertexAttribute_List = new List<SOBJ.Shape.VertexAttribute>();
+        public List<Shape.VertexAttribute> VertexAttribute_List = new List<Shape.VertexAttribute>();
         [Editor(typeof(VertexAttribute.VertexAttributeEditor), typeof(UITypeEditor))]
-        public List<SOBJ.Shape.VertexAttribute> VertexAttributes { get => VertexAttribute_List; set => VertexAttribute_List = value; }
+        public List<Shape.VertexAttribute> VertexAttributes { get => VertexAttribute_List; set => VertexAttribute_List = value; }
 
         //public List<CGFXFormat.SOBJ.Shape.VertexAttribute> VertexAttributes { get; set; }
 
@@ -105,7 +107,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData
             public int UnknownData4 { get; set; }
             public int UnknownData5 { get; set; }
 
-            public BlendShape(SOBJ.Shape.BlendShape blendShape)
+            public BlendShape(Shape.BlendShape blendShape)
             {
                 UnknownData1 = blendShape.UnknownData1;
                 UnknownData2 = blendShape.UnknownData2;
@@ -129,7 +131,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData
             }
         }
 
-        public ShapeData_PropertyGrid(SOBJ.Shape shape)
+        public ShapeData_PropertyGrid(Shape shape)
         {
             Name = shape.Name;
             SOBJ_Header = shape.SOBJ_Header;
@@ -149,7 +151,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData
             PrimitiveSetCount = shape.PrimitiveSetCount;
             PrimitiveSetListOffset = shape.PrimitiveSetListOffset;
 
-            primitiveSets = shape.primitiveSets;
+            PrimitiveSetList = shape.primitiveSets;
 
             BaseAddress = shape.BaseAddress;
             VertexAttributeCount = shape.VertexAttributeCount;

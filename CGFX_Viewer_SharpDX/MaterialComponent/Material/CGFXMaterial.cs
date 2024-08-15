@@ -136,19 +136,19 @@ namespace CGFX_Viewer_SharpDX.Component.Material
             }
         }
 
-        public static readonly DependencyProperty DiffuseMapSamplerProperty = DependencyProperty.Register("DiffuseMapSampler", typeof(SamplerStateDescription), typeof(CGFXMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4, delegate (DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static readonly DependencyProperty DiffuseMapSamplerListProperty = DependencyProperty.Register("DiffuseMapSamplerList", typeof(List<SamplerStateDescription>), typeof(CGFXMaterial), new PropertyMetadata(new List<SamplerStateDescription>(), delegate (DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((d as CGFXMaterial).Core as CGFXMaterialCore).DiffuseMapSampler = (SamplerStateDescription)e.NewValue;
+            ((d as CGFXMaterial).Core as CGFXMaterialCore).DiffuseMapSamplerList = (List<SamplerStateDescription>)e.NewValue;
         }));
-        public SamplerStateDescription DiffuseMapSampler
+        public List<SamplerStateDescription> DiffuseMapSamplerList
         {
             get
             {
-                return (SamplerStateDescription)GetValue(DiffuseMapSamplerProperty);
+                return (List<SamplerStateDescription>)GetValue(DiffuseMapSamplerListProperty);
             }
             set
             {
-                SetValue(DiffuseMapSamplerProperty, value);
+                SetValue(DiffuseMapSamplerListProperty, value);
             }
         }
 
@@ -489,7 +489,7 @@ namespace CGFX_Viewer_SharpDX.Component.Material
             SpecularShininess = core.SpecularShininess;
 
             //DisplacementMapScaleMask = core.DisplacementMapScaleMask;
-            DiffuseMapSampler = core.DiffuseMapSampler;
+            DiffuseMapSamplerList = core.DiffuseMapSamplerList;
             DisplacementMapSampler = core.DisplacementMapSampler;
             MaxTessellationDistance = core.MaxTessellationDistance;
             MinTessellationDistance = core.MinTessellationDistance;
@@ -527,7 +527,7 @@ namespace CGFX_Viewer_SharpDX.Component.Material
                 SpecularShininess = SpecularShininess,
 
                 //DisplacementMapScaleMask = DisplacementMapScaleMask,
-                DiffuseMapSampler = DiffuseMapSampler,
+                DiffuseMapSamplerList = DiffuseMapSamplerList,
                 DisplacementMapSampler = DisplacementMapSampler,
                 MaxTessellationDistance = (float)MaxTessellationDistance,
                 MinTessellationDistance = (float)MinTessellationDistance,
@@ -575,7 +575,7 @@ namespace CGFX_Viewer_SharpDX.Component.Material
                 //SpecularColorMap = SpecularColorMap,
                 //EmissiveMap = EmissiveMap,
                 //DisplacementMapScaleMask = DisplacementMapScaleMask,
-                DiffuseMapSampler = DiffuseMapSampler,
+                DiffuseMapSamplerList = DiffuseMapSamplerList,
                 DisplacementMapSampler = DisplacementMapSampler,
                 MaxTessellationDistance = (float)MaxTessellationDistance,
                 MinTessellationDistance = (float)MinTessellationDistance,

@@ -33,20 +33,18 @@ namespace CGFX_Viewer_SharpDX.Forms.General.UserDataForm
 
 				for(int i = 0; i < userData_List.Count; i++)
 				{
-					if (userData_List[i].String_Data != null)
-					{
-                        UDList.Add(i + " : " + userData_List[i].String_Data.ToString());
-                    }
-                    else if (userData_List[i].Int32_Data != null)
+                    if (userData_List[i].CGFXDataSection.GetType().IsAssignableFrom(typeof(CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.StringData)))
                     {
-                        UDList.Add(i + " : " + userData_List[i].Int32_Data.ToString());
+                        UDList.Add(i + " : " + userData_List[i].GetCGFXData<CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.StringData>().ToString());
                     }
-                    else if (userData_List[i].RealNumber_Data != null)
+                    else if (userData_List[i].CGFXDataSection.GetType().IsAssignableFrom(typeof(CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.Int32Data)))
                     {
-                        UDList.Add(i + " : " + userData_List[i].RealNumber_Data.ToString());
+                        UDList.Add(i + " : " + userData_List[i].GetCGFXData<CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.Int32Data>().ToString());
                     }
-
-                    //UDList.Add(i + " : " + userData_List[i].Type.ToString());
+                    else if (userData_List[i].CGFXDataSection.GetType().IsAssignableFrom(typeof(CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.RealNumber)))
+                    {
+                        UDList.Add(i + " : " + userData_List[i].GetCGFXData<CGFXLibrary.CGFXSection.DataComponent.CGFXUserData.RealNumber>().ToString());
+                    }
                 }
 
 				listBox1.Items.AddRange(UDList.ToArray());

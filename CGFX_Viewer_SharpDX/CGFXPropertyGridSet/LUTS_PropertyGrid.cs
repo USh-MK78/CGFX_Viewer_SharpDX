@@ -19,15 +19,15 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         [Editor(typeof(CGFX_CustomPropertyGridClass.UserDataDictionaryEditor), typeof(UITypeEditor))]
         public List<CGFXFormat.CGFXData> userDataList { get => UserData_List; set => UserData_List = value; }
 
-        public List<CGFXFormat.CGFXData> LUTS_UserData_List = new List<CGFXFormat.CGFXData>();
+        public List<CGFXFormat.CGFXData> LUTS_ValueData_List = new List<CGFXFormat.CGFXData>();
         [Editor(typeof(CGFX_CustomPropertyGridClass.UserDataDictionaryEditor), typeof(UITypeEditor))]
-        public List<CGFXFormat.CGFXData> LUTS_userDataList { get => LUTS_UserData_List; set => LUTS_UserData_List = value; }
+        public List<CGFXFormat.CGFXData> LUTS_ValueDataList { get => LUTS_ValueData_List; set => LUTS_ValueData_List = value; }
 
         public LUTS_PropertyGrid(LUTS LUTS)
         {
             Name = LUTS.Name;
             userDataList = LUTS.UserdataDICT.DICT_Entries.Select(x => x.CGFXData).ToList();
-            LUTS_userDataList = LUTS.LUTS_DICTData.DICT_Entries.Select(x => x.CGFXData).ToList();
+            LUTS_ValueDataList = LUTS.LUTS_DICTData.DICT_Entries.Select(x => x.CGFXData).ToList();
         }
     }
 }

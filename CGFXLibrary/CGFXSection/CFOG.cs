@@ -11,7 +11,7 @@ namespace CGFXLibrary.CGFXSection
     /// <summary>
     /// Fogs
     /// </summary>
-    public class CFOG
+    public class CFOG : IO.BinaryIOInterface.BinaryIO
     {
         //public long EndPos;
         public string Name;
@@ -63,8 +63,10 @@ namespace CGFXLibrary.CGFXSection
         public byte[] CFOG_UnknownBytes_7 { get; set; } //0x4
         public byte[] CFOG_UnknownBytes_8 { get; set; } //0x4
         public int CFOG_CFOGAnimation_DICTOffset { get; set; } //0x4
+
         public DICT FogAnimationDICT { get; set; }
         public DICT ColorDICT { get; set; }
+
         public Transform.Scale Transform_Scale { get; set; }
         public Transform.Rotate Transform_Rotate { get; set; }
         public Transform.Translate Transform_Translate { get; set; }
@@ -154,8 +156,11 @@ namespace CGFXLibrary.CGFXSection
             CFOG_UnknownBytes_7 = new byte[4];
             CFOG_UnknownBytes_8 = new byte[4];
             CFOG_CFOGAnimation_DICTOffset = 0;
+
             FogAnimationDICT = new DICT();
             ColorDICT = new DICT();
+
+
             Transform_Scale = new Transform.Scale();
             Transform_Rotate = new Transform.Rotate();
             Transform_Translate = new Transform.Translate();
@@ -163,7 +168,7 @@ namespace CGFXLibrary.CGFXSection
             CFOG_4x4_Matrix_Transform = new MatrixData.WorldMatrix_Transform();
             Color_RGBA = new CFOG_RGBA(0, 0, 0, 0);
             CFOG_UnknownOffset1 = 0;
-            UnknownUserData = new CGFXData(new byte[4]);
+            UnknownUserData = new CGFXData(null, true); //CGFXData.UD_FloatType.ValueSet
 
             FogSettingOffset = 0;
             CFOGSettings = new CFOGSetting();
@@ -205,7 +210,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(CFOG_UserDataDICTOffset, SeekOrigin.Current);
 
-                UserDataDict.ReadDICT(br, BOM);
+                UserDataDict.ReadDICT(br, BOM, true);
 
                 br.BaseStream.Position = Pos;
             }
@@ -225,13 +230,16 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(CFOG_CFOGAnimation_DICTOffset, SeekOrigin.Current);
 
-                FogAnimationDICT.ReadDICT(br, BOM);
+                FogAnimationDICT.ReadDICT(br, BOM, true);
+                //ColorDICT.ReadDICT(br, BOM, true);
 
-                #region ColorDICT
-                var SetPos = FogAnimationDICT.DICT_Entries.Last().CGFXData.RealNumber_Data.EndPos;
-                br.BaseStream.Position = SetPos;
+                #region ColorDICT, 0x00000400
+                var SetPos = ((CGFXSection.DataComponent.CGFXUserData.RealNumber)FogAnimationDICT.DICT_Entries.Last().CGFXData.CGFXDataSection).EndPos;
+                //br.BaseStream.Position = SetPos;
 
-                ColorDICT.ReadDICT(br, BOM);
+                //long p = br.BaseStream.Position;
+
+                //ColorDICT.ReadDICT(br, BOM, true);
                 #endregion
 
                 br.BaseStream.Position = Pos;
@@ -244,7 +252,7 @@ namespace CGFXLibrary.CGFXSection
             CFOG_4x4_Matrix_Transform.ReadMatrix4x4Transform(br, BOM);
             Color_RGBA.ReadCFOGRGBA(br, BOM);
 
-            //UserDataType => Float(No DICT)
+            //UserDataType => byte (?)(No DICT)
             CFOG_UnknownOffset1 = BitConverter.ToInt32(endianConvert.Convert(br.ReadBytes(4)), 0);
             if (CFOG_UnknownOffset1 != 0)
             {
@@ -255,18 +263,9 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(CFOG_UnknownOffset1, SeekOrigin.Current);
 
-
                 //TODO : ValueSet(DICTSetionの根本的な修正が必要 (?))
-
-                ////UserData => Float
-                //CGFXData unknownUserData = new CGFXData(br.ReadBytes(4));
-                //unknownUserData.Reader(br, BOM);
-                //UnknownUserData = unknownUserData;
-
-                //Flag = new Flags(br.ReadBytes(4));
-                //UserData userData = new UserData(UserData.UserDataType.RealNumber);
-                //userData.RealNumber_Data.ReadUserDataList(br, BOM, UserData.RealNumber.RealNumberType.Color);
-                //UnknownUserData = userData;
+                //UserData => Float
+                //UnknownUserData.Reader(br, BOM);
 
                 br.BaseStream.Position = Pos;
             }
@@ -285,6 +284,16 @@ namespace CGFXLibrary.CGFXSection
 
                 br.BaseStream.Position = Pos;
             }
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM = null)
+        {
+            ReadCFOG(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

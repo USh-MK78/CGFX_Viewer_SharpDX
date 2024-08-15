@@ -1246,11 +1246,11 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
                 UnknownData = materialInfoSet.UnknownData;
 
                 //MTOB.MaterialInfoSet materialInfoSet = null;
-                if (materialInfoSet.TXOBMaterialDataSection.TXOB_MaterialSection != null)
+                if (((TXOB.MaterialInfo)materialInfoSet.TXOBMaterialDataSection.CGFXDataSection) != null)
                 {
-                    TXOBMaterialSectionSetting = new TXOB_MaterialSectionSetting(materialInfoSet.TXOBMaterialDataSection.TXOB_MaterialSection.MaterialInfoSection);
+                    TXOBMaterialSectionSetting = new TXOB_MaterialSectionSetting(((TXOB.MaterialInfo)materialInfoSet.TXOBMaterialDataSection.CGFXDataSection));
                 }
-                else if (materialInfoSet.TXOBMaterialDataSection.TXOB_MaterialSection == null)
+                else if (((TXOB.MaterialInfo)materialInfoSet.TXOBMaterialDataSection.CGFXDataSection) == null)
                 {
                     TXOBMaterialSectionSetting = new TXOB_MaterialSectionSetting(new TXOB.MaterialInfo());
                 }

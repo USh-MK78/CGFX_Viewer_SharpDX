@@ -22,14 +22,22 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
         [Editor(typeof(CGFX_CustomPropertyGridClass.UserDataDictionaryEditor), typeof(UITypeEditor))]
         public List<CGFXFormat.CGFXData> userDataList { get => UserData_List; set => UserData_List = value; }
 
-
-        public CFOG.CFOGSetting.FogSuffixType FogSuffixType { get; set; }
-
-        public float FogStart { get; set; }
-        public float FogEnd { get; set; }
-        public float Concentration { get; set; }
-
         public CFOG.FogFlipSetting.FlipSetting FlipSetting { get; set; }
+
+        public byte[] CFOG_UnknownBytes_5 { get; set; } //0x4
+        public byte[] CFOG_UnknownBytes_6 { get; set; } //0x4
+        public byte[] CFOG_UnknownBytes_7 { get; set; } //0x4
+        public byte[] CFOG_UnknownBytes_8 { get; set; } //0x4
+        public int CFOG_CFOGAnimation_DICTOffset { get; set; } //0x4
+
+        public DICT FogAnimationDICT { get; set; }
+        public DICT ColorDICT { get; set; }
+
+        public Transform.Scale Transform_Scale { get; set; }
+        public Transform.Rotate Transform_Rotate { get; set; }
+        public Transform.Translate Transform_Translate { get; set; }
+        public MatrixData.LocalMatrix CFOG_4x4_Matrix { get; set; }
+        public MatrixData.WorldMatrix_Transform CFOG_4x4_Matrix_Transform { get; set; }
 
         [TypeConverter(typeof(CGFX_CustomPropertyGridClass.CustomExpandableObjectSortTypeConverter))]
         public RGB RGB_Color { get; set; } = new RGB();
@@ -85,24 +93,44 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
 			}
 		}
 
-        internal CFOG_PropertyGrid(CFOG CFOGData)
+        public CGFXFormat.CGFXData UnknownUserData { get; set; } //ColorData
+
+        public CFOG.CFOGSetting.FogSuffixType FogSuffixType { get; set; }
+        public float FogStart { get; set; }
+        public float FogEnd { get; set; }
+        public float Concentration { get; set; }
+
+        public CFOG_PropertyGrid(CFOG CFOGData)
 		{
             Name = CFOGData.Name;
 
             userDataList = CFOGData.UserDataDict.DICT_Entries.Select(x => x.CGFXData).ToList();
+            FlipSetting = CFOGData.FogFlipSettings.FlipSettings;
 
+            CFOG_UnknownBytes_5 = CFOGData.CFOG_UnknownBytes_5;
+            CFOG_UnknownBytes_6 = CFOGData.CFOG_UnknownBytes_6;
+            CFOG_UnknownBytes_7 = CFOGData.CFOG_UnknownBytes_7;
+            CFOG_UnknownBytes_8 = CFOGData.CFOG_UnknownBytes_8;
+
+            FogAnimationDICT = CFOGData.FogAnimationDICT;
+            ColorDICT = CFOGData.ColorDICT;
+            Transform_Scale = CFOGData.Transform_Scale;
+            Transform_Rotate = CFOGData.Transform_Rotate;
+            Transform_Translate = CFOGData.Transform_Translate;
+            CFOG_4x4_Matrix = CFOGData.CFOG_4x4_Matrix;
+            CFOG_4x4_Matrix_Transform = CFOGData.CFOG_4x4_Matrix_Transform;
+
+            RGB_Color = new RGB(CFOGData.Color_RGBA.Color_R, CFOGData.Color_RGBA.Color_G, CFOGData.Color_RGBA.Color_B, CFOGData.Color_RGBA.Color_A);
+
+            UnknownUserData = CFOGData.UnknownUserData;
 
             FogSuffixType = CFOGData.CFOGSettings.FogSuffixTypes;
             FogStart = CFOGData.CFOGSettings.FogStart;
             FogEnd = CFOGData.CFOGSettings.FogEnd;
             Concentration = CFOGData.CFOGSettings.Concentration;
+        }
 
-            FlipSetting = CFOGData.FogFlipSettings.FlipSettings;
-
-            RGB_Color = new RGB(CFOGData.Color_RGBA.Color_R, CFOGData.Color_RGBA.Color_G, CFOGData.Color_RGBA.Color_B, CFOGData.Color_RGBA.Color_A);
-		}
-
-		public override string ToString()
+        public override string ToString()
 		{
 			return Name;
 		}

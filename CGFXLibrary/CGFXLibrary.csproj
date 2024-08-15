@@ -56,6 +56,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CGFXDataSectionInterface.cs" />
     <Compile Include="CGFXFormat.cs" />
     <Compile Include="CGFXHelper.cs" />
     <Compile Include="CGFXSection\CALT.cs" />
@@ -64,19 +65,25 @@
     <Compile Include="CGFXSection\CENV.cs" />
     <Compile Include="CGFXSection\CFLT.cs" />
     <Compile Include="CGFXSection\CFOG.cs" />
-    <Compile Include="CGFXSection\CGFXSection.cs" />
     <Compile Include="CGFXSection\CHLT.cs" />
     <Compile Include="CGFXSection\CMDL.cs" />
     <Compile Include="CGFXSection\CNOD.cs" />
     <Compile Include="CGFXSection\CVLT.cs" />
+    <Compile Include="CGFXSection\DataComponent\AnimationData.cs" />
+    <Compile Include="CGFXSection\DataComponent\CFOG_UnknownData0.cs" />
+    <Compile Include="CGFXSection\DataComponent\CGFXUserData.cs" />
+    <Compile Include="CGFXSection\DataComponent\NameSetData.cs" />
     <Compile Include="CGFXSection\LUTS.cs" />
     <Compile Include="CGFXSection\MTOB.cs" />
     <Compile Include="CGFXSection\PEMT.cs" />
     <Compile Include="CGFXSection\SHDR.cs" />
     <Compile Include="CGFXSection\TXOB.cs" />
     <Compile Include="DICT.cs" />
+    <Compile Include="IO\BinaryIOInterface.cs" />
     <Compile Include="MatrixData.cs" />
-    <Compile Include="SOBJ.cs" />
+    <Compile Include="SOBJ_Format\MeshData\Mesh.cs" />
+    <Compile Include="SOBJ_Format\ShapeData\Shape.cs" />
+    <Compile Include="SOBJ_Format\SOBJ.cs" />
     <Compile Include="TextureFormat\EFETextures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transform.cs" />
@@ -84,5 +91,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

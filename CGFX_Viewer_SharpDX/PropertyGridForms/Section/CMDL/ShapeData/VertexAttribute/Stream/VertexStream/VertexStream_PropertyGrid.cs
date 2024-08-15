@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.Design;
 using CGFXLibrary;
+using CGFXLibrary.SOBJ_Format.ShapeData;
 
 namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAttribute.Stream.VertexStream
 {
@@ -58,7 +59,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
                 RGBA = 4
             }
 
-            public Component(SOBJ.Shape.VertexAttribute.Stream.VertexStream.Component component)
+            public Component(Shape.VertexAttribute.Stream.VertexStream.Component component)
             {
                 Flags = component.Flags;
                 ComponentCount = component.ComponentCount;
@@ -74,7 +75,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
         public float Scale { get; set; }
         public int Offset { get; set; }
 
-        public VertexStream_PropertyGrid(SOBJ.Shape.VertexAttribute.Stream.VertexStream vertexStream)
+        public VertexStream_PropertyGrid(Shape.VertexAttribute.Stream.VertexStream vertexStream)
         {
             VertexStreamsOffset = vertexStream.VertexStreamsOffset;
             VertexAttributeUsageFlag = vertexStream.VertexAttributeUsageFlag;
@@ -128,7 +129,7 @@ namespace CGFX_Viewer_SharpDX.PropertyGridForms.Section.CMDL.ShapeData.VertexAtt
             IWindowsFormsEditorService svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
             if (svc != null && value != null)
             {
-                VertexStreamEditorForm form = new VertexStreamEditorForm(value as List<SOBJ.Shape.VertexAttribute.Stream.VertexStream>);
+                VertexStreamEditorForm form = new VertexStreamEditorForm(value as List<Shape.VertexAttribute.Stream.VertexStream>);
                 form.ShowDialog();
 
                 value = form.vertexStream_list;

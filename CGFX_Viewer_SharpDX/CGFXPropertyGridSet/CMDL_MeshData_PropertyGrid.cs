@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CGFXLibrary;
 using CGFXLibrary.CGFXSection;
+using CGFXLibrary.SOBJ_Format;
 
 namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
 {
@@ -92,109 +93,60 @@ namespace CGFX_Viewer_SharpDX.CGFXPropertyGridSet
 
         public CMDL_MeshData_PropertyGrid(CMDL.MeshData meshData)
         {
-            SOBJ_Header = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.SOBJ_Header;
-            Revision = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Revision;
+            SOBJ SOBJ = meshData.SOBJData.GetCGFXData<SOBJ>();
+            //SOBJ SOBJ = ((SOBJ)meshData.SOBJData.CGFXDataSection);
 
-            SOBJNameOffset = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.SOBJNameOffset;
-            Name = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Name;
+            SOBJ_Header = SOBJ.Mesh.SOBJ_Header;
+            Revision = SOBJ.Mesh.Revision;
 
-            UnknownData2 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.UnknownData2;
-            UnknownOffset1 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.UnknownOffset1;
+            SOBJNameOffset = SOBJ.Mesh.SOBJNameOffset;
+            Name = SOBJ.Mesh.Name;
 
-            ShapeIndex = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.ShapeIndex;
-            MaterialIndex = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.MaterialIndex;
+            UnknownData2 = SOBJ.Mesh.UnknownData2;
+            UnknownOffset1 = SOBJ.Mesh.UnknownOffset1;
+
+            ShapeIndex = SOBJ.Mesh.ShapeIndex;
+            MaterialIndex = SOBJ.Mesh.MaterialIndex;
 
             UnknownColorSet = new UnknownColor
             {
-                R = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.UnknownColorSet.R,
-                G = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.UnknownColorSet.G,
-                B = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.UnknownColorSet.B,
-                A = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.UnknownColorSet.A
+                R = SOBJ.Mesh.UnknownColorSet.R,
+                G = SOBJ.Mesh.UnknownColorSet.G,
+                B = SOBJ.Mesh.UnknownColorSet.B,
+                A = SOBJ.Mesh.UnknownColorSet.A
             };
 
-            IsVisible = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.IsVisible;
-            RenderPriority = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.RenderPriority;
-            OwnerModelOffset = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.OwnerModelOffset;
-            MeshNodeVisibilityIndex = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.MeshNodeVisibilityIndex;
+            IsVisible = SOBJ.Mesh.IsVisible;
+            RenderPriority = SOBJ.Mesh.RenderPriority;
+            OwnerModelOffset = SOBJ.Mesh.OwnerModelOffset;
+            MeshNodeVisibilityIndex = SOBJ.Mesh.MeshNodeVisibilityIndex;
 
-            UnknownBytes = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.UnknownBytes;
+            UnknownBytes = SOBJ.Mesh.UnknownBytes;
 
-            Unknown1 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown1;
-            Unknown2 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown2;
-            Unknown3 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown3;
-            MeshIndex = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.MeshIndex;
-            Unknown5 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown5;
-            Unknown6 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown6;
-            Unknown7 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown7;
-            Unknown8 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown8;
-            Unknown9 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown9;
-            Unknown10 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown10;
-            Unknown11 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown11;
-            Unknown12 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown12;
-            Unknown13 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown13;
-            Unknown14 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown14;
-            Unknown15 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown15;
-            Unknown16 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown16;
-            Unknown17 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown17;
-            MeshNameOffset = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.MeshNameOffset;
-            MeshName = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.MeshName;
+            Unknown1 = SOBJ.Mesh.Unknown1;
+            Unknown2 = SOBJ.Mesh.Unknown2;
+            Unknown3 = SOBJ.Mesh.Unknown3;
+            MeshIndex = SOBJ.Mesh.MeshIndex;
+            Unknown5 = SOBJ.Mesh.Unknown5;
+            Unknown6 = SOBJ.Mesh.Unknown6;
+            Unknown7 = SOBJ.Mesh.Unknown7;
+            Unknown8 = SOBJ.Mesh.Unknown8;
+            Unknown9 = SOBJ.Mesh.Unknown9;
+            Unknown10 = SOBJ.Mesh.Unknown10;
+            Unknown11 = SOBJ.Mesh.Unknown11;
+            Unknown12 = SOBJ.Mesh.Unknown12;
+            Unknown13 = SOBJ.Mesh.Unknown13;
+            Unknown14 = SOBJ.Mesh.Unknown14;
+            Unknown15 = SOBJ.Mesh.Unknown15;
+            Unknown16 = SOBJ.Mesh.Unknown16;
+            Unknown17 = SOBJ.Mesh.Unknown17;
+            MeshNameOffset = SOBJ.Mesh.MeshNameOffset;
+            MeshName = SOBJ.Mesh.MeshName;
 
-            Unknown19 = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.Unknown19;
+            Unknown19 = SOBJ.Mesh.Unknown19;
 
-            MeshNodeNameOffset = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.MeshNodeNameOffset;
-            MeshNodeName = meshData.SOBJData.SOBJ_Mesh_Section.Meshes.MeshNodeName;
-
-            //SOBJ_Header = meshData.SOBJData.Meshes.SOBJ_Header;
-            //Revision = meshData.SOBJData.Meshes.Revision;
-
-            //SOBJNameOffset = meshData.SOBJData.Meshes.SOBJNameOffset;
-            //Name = meshData.SOBJData.Meshes.Name;
-
-            //UnknownData2 = meshData.SOBJData.Meshes.UnknownData2;
-            //UnknownOffset1 = meshData.SOBJData.Meshes.UnknownOffset1;
-
-            //ShapeIndex = meshData.SOBJData.Meshes.ShapeIndex;
-            //MaterialIndex = meshData.SOBJData.Meshes.MaterialIndex;
-
-            //UnknownColorSet = new UnknownColor
-            //{
-            //    R = meshData.SOBJData.Meshes.UnknownColorSet.R,
-            //    G = meshData.SOBJData.Meshes.UnknownColorSet.G,
-            //    B = meshData.SOBJData.Meshes.UnknownColorSet.B,
-            //    A = meshData.SOBJData.Meshes.UnknownColorSet.A
-            //};
-
-            //IsVisible = meshData.SOBJData.Meshes.IsVisible;
-            //RenderPriority = meshData.SOBJData.Meshes.RenderPriority;
-            //OwnerModelOffset = meshData.SOBJData.Meshes.OwnerModelOffset;           
-            //MeshNodeVisibilityIndex = meshData.SOBJData.Meshes.MeshNodeVisibilityIndex;
-
-            //UnknownBytes = meshData.SOBJData.Meshes.UnknownBytes;
-
-            //Unknown1 = meshData.SOBJData.Meshes.Unknown1;
-            //Unknown2 = meshData.SOBJData.Meshes.Unknown2;
-            //Unknown3 = meshData.SOBJData.Meshes.Unknown3;
-            //MeshIndex = meshData.SOBJData.Meshes.MeshIndex;
-            //Unknown5 = meshData.SOBJData.Meshes.Unknown5;
-            //Unknown6 = meshData.SOBJData.Meshes.Unknown6;
-            //Unknown7 = meshData.SOBJData.Meshes.Unknown7;
-            //Unknown8 = meshData.SOBJData.Meshes.Unknown8;
-            //Unknown9 = meshData.SOBJData.Meshes.Unknown9;
-            //Unknown10 = meshData.SOBJData.Meshes.Unknown10;
-            //Unknown11 = meshData.SOBJData.Meshes.Unknown11;
-            //Unknown12 = meshData.SOBJData.Meshes.Unknown12;
-            //Unknown13 = meshData.SOBJData.Meshes.Unknown13;
-            //Unknown14 = meshData.SOBJData.Meshes.Unknown14;
-            //Unknown15 = meshData.SOBJData.Meshes.Unknown15;
-            //Unknown16 = meshData.SOBJData.Meshes.Unknown16;
-            //Unknown17 = meshData.SOBJData.Meshes.Unknown17;
-            //MeshNameOffset = meshData.SOBJData.Meshes.MeshNameOffset;
-            //MeshName = meshData.SOBJData.Meshes.MeshName;
-
-            //Unknown19 = meshData.SOBJData.Meshes.Unknown19;
-
-            //MeshNodeNameOffset = meshData.SOBJData.Meshes.MeshNodeNameOffset;
-            //MeshNodeName = meshData.SOBJData.Meshes.MeshNodeName;
+            MeshNodeNameOffset = SOBJ.Mesh.MeshNodeNameOffset;
+            MeshNodeName = SOBJ.Mesh.MeshNodeName;
 
             //unknownDataSection2
         }

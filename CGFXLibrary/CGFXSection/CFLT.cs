@@ -5,15 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static CGFXLibrary.CGFXFormat.CGFX.DATA;
-using static CGFXLibrary.CGFXSection.MTOB;
 
 namespace CGFXLibrary.CGFXSection
 {
     /// <summary>
-    /// Fragment Light
+    /// Fragment Light (Flag : 0xA2000040)
     /// </summary>
-    public class CFLT
+    public class CFLT : IO.BinaryIOInterface.BinaryIO
     {
         public string Name;
         public char[] CFLT_Header { get; set; }
@@ -361,7 +359,7 @@ namespace CGFXLibrary.CGFXSection
                 //Move DataOffset
                 br.BaseStream.Seek(UnknownDICTOffset, SeekOrigin.Current);
 
-                UnknownDICT.ReadDICT(br, BOM);
+                UnknownDICT.ReadDICT(br, BOM, true);
 
                 br.BaseStream.Position = Pos;
             }
@@ -399,6 +397,16 @@ namespace CGFXLibrary.CGFXSection
             Position_Value.ReadPositionValue(br, BOM);
 
             //16 bytes
+        }
+
+        public override void Read(BinaryReader br, byte[] BOM)
+        {
+            ReadCFLT(br, BOM);
+        }
+
+        public override void Write(BinaryWriter bw, byte[] BOM)
+        {
+            throw new NotImplementedException();
         }
 
         public CFLT()
